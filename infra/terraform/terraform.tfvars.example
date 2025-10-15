@@ -1,7 +1,7 @@
 # Example terraform.tfvars configuration
 # Copy this file to terraform.tfvars and customize
 
-aws_region   = "us-east-1"
+aws_region   = "ap-southeast-1"
 project_name = "folio-site"
 environment  = "production"
 

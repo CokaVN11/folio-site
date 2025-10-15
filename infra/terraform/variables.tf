@@ -1,13 +1,13 @@
 variable "aws_region" {
   description = "AWS region for resources"
   type        = string
-  default     = "us-east-1"
+  default     = "ap-southeast-1"
 }
 
 variable "project_name" {
   description = "Project name used for resource naming"
   type        = string
-  default     = "folio-site"
+  default     = "folio"
 }
 
 variable "environment" {
@@ -25,5 +25,5 @@ variable "domain_name" {
 variable "lambda_zip_path" {
   description = "Path to Lambda deployment package"
   type        = string
-  default     = "../../apps/services/contact-lambda/dist/handler.zip"
+  default     = "../../apps/services/contact-lambda/handler.zip"
 }

@@ -32,7 +32,7 @@ pnpm --filter web start
 Create `.env.local` in the `apps/web` directory:
 
 ```bash
-NEXT_PUBLIC_API_URL=https://your-api-gateway-url.execute-api.us-east-1.amazonaws.com
+NEXT_PUBLIC_API_URL=https://your-api-gateway-url.execute-api.ap-southeast-1.amazonaws.com
 ```
 
 ### Customization

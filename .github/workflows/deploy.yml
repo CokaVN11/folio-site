@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 env:
-  AWS_REGION: us-east-1
-  TERRAFORM_VERSION: 1.5.0
+  AWS_REGION: ap-southeast-1
+  TERRAFORM_VERSION: 1.13.3
 
 jobs:
   deploy:
@@ -31,7 +31,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -61,11 +61,24 @@ jobs:
         working-directory: infra/terraform
         run: terraform init
 
+      - name: Check if Terraform state exists
+        id: check_state
+        working-directory: infra/terraform
+        run: |
+          if aws s3 ls folio-terraform-state-ap-southeast-1 --region ap-southeast-1 2>/dev/null | grep -q "terraform.tfstate"; then
+            echo "state_exists=true" >> $GITHUB_OUTPUT
+            echo "Terraform state exists - will update existing resources"
+          else
+            echo "state_exists=false" >> $GITHUB_OUTPUT
+            echo "No Terraform state found - will create new resources"
+          fi
+
       - name: Terraform Plan
         working-directory: infra/terraform
         run: |
           terraform plan \
             -var="lambda_zip_path=../../apps/services/contact-lambda/handler.zip" \
+            -var="environment=dev" \
             -out=tfplan
 
       - name: Terraform Apply

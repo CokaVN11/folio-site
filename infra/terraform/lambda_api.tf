@@ -62,7 +62,6 @@ resource "aws_lambda_function" "contact" {
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.contact_messages.name
-      AWS_REGION = var.aws_region
     }
   }
 

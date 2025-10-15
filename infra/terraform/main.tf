@@ -4,18 +4,18 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"
+      version = "5.100.0"
     }
   }
 
-  # Uncomment for remote state management
-  # backend "s3" {
-  #   bucket         = "your-terraform-state-bucket"
-  #   key            = "folio-site/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   dynamodb_table = "terraform-state-lock"
-  #   encrypt        = true
-  # }
+  # Remote state management
+  backend "s3" {
+    bucket         = "folio-terraform-state-ap-southeast-1"
+    key            = "folio-site/terraform.tfstate"
+    region         = "ap-southeast-1"
+    use_lockfile   = true
+    encrypt        = true
+  }
 }
 
 provider "aws" {

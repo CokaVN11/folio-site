@@ -46,24 +46,3 @@ resource "aws_s3_bucket_website_configuration" "site" {
   }
 }
 
-# S3 bucket for Lambda artifacts
-resource "aws_s3_bucket" "lambda_artifacts" {
-  bucket = "${var.project_name}-lambda-artifacts-${var.environment}"
-}
-
-resource "aws_s3_bucket_public_access_block" "lambda_artifacts" {
-  bucket = aws_s3_bucket.lambda_artifacts.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
-resource "aws_s3_bucket_versioning" "lambda_artifacts" {
-  bucket = aws_s3_bucket.lambda_artifacts.id
-
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
