@@ -1,0 +1,35 @@
+{
+  "name": "folio-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio website with serverless contact form",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build:web": "pnpm --filter web build",
+    "build:lambda": "pnpm --filter contact-lambda build",
+    "build:all": "pnpm --filter web build && pnpm --filter contact-lambda build",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "lint": "pnpm --filter web lint",
+    "type-check": "tsc --build",
+    "clean": "pnpm --filter web clean && pnpm --filter contact-lambda clean"
+  },
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "aws-lambda",
+    "terraform",
+    "monorepo"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.3"
+  }
+}

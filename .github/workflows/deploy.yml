@@ -1,0 +1,121 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  TERRAFORM_VERSION: 1.5.0
+
+jobs:
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Lambda
+        run: pnpm --filter contact-lambda build
+
+      - name: Package Lambda
+        working-directory: apps/services/contact-lambda
+        run: |
+          cd dist
+          zip -r handler.zip .
+          mv handler.zip ../
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+
+      - name: Terraform Init
+        working-directory: infra/terraform
+        run: terraform init
+
+      - name: Terraform Plan
+        working-directory: infra/terraform
+        run: |
+          terraform plan \
+            -var="lambda_zip_path=../../apps/services/contact-lambda/handler.zip" \
+            -out=tfplan
+
+      - name: Terraform Apply
+        working-directory: infra/terraform
+        run: terraform apply -auto-approve tfplan
+
+      - name: Get API Gateway URL
+        id: api_url
+        working-directory: infra/terraform
+        run: |
+          API_URL=$(terraform output -raw api_gateway_url)
+          echo "api_url=$API_URL" >> $GITHUB_OUTPUT
+          echo "API Gateway URL: $API_URL"
+
+      - name: Get S3 bucket name
+        id: s3_bucket
+        working-directory: infra/terraform
+        run: |
+          BUCKET_NAME=$(terraform output -raw site_bucket_name)
+          echo "bucket_name=$BUCKET_NAME" >> $GITHUB_OUTPUT
+          echo "S3 Bucket: $BUCKET_NAME"
+
+      - name: Build web with API URL
+        env:
+          NEXT_PUBLIC_API_URL: ${{ steps.api_url.outputs.api_url }}
+        run: pnpm --filter web build
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync apps/web/out/ s3://${{ steps.s3_bucket.outputs.bucket_name }}/ \
+            --delete \
+            --cache-control "public, max-age=3600"
+
+      - name: Invalidate CloudFront (if exists)
+        continue-on-error: true
+        run: |
+          DISTRIBUTION_ID=$(cd infra/terraform && terraform output -raw cloudfront_distribution_id 2>/dev/null || echo "")
+          if [ -n "$DISTRIBUTION_ID" ] && [ "$DISTRIBUTION_ID" != "null" ]; then
+            aws cloudfront create-invalidation \
+              --distribution-id $DISTRIBUTION_ID \
+              --paths "/*"
+            echo "CloudFront invalidation created"
+          else
+            echo "No CloudFront distribution found, skipping invalidation"
+          fi
+
+      - name: Deployment summary
+        run: |
+          echo "## Deployment Complete 🚀" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **API Gateway URL**: ${{ steps.api_url.outputs.api_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **S3 Bucket**: ${{ steps.s3_bucket.outputs.bucket_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Region**: ${{ env.AWS_REGION }}" >> $GITHUB_STEP_SUMMARY

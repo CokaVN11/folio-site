@@ -1,0 +1,12 @@
+# Example terraform.tfvars configuration
+# Copy this file to terraform.tfvars and customize
+
+aws_region   = "us-east-1"
+project_name = "folio-site"
+environment  = "production"
+
+# Optional: Provide a custom domain name to enable CloudFront
+# domain_name = "example.com"
+
+# Optional: Path to Lambda deployment package
+# lambda_zip_path = "../../apps/services/contact-lambda/dist/handler.zip"
