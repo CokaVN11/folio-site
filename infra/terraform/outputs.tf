@@ -32,3 +32,23 @@ output "lambda_function_name" {
   description = "Name of the Lambda function"
   value       = aws_lambda_function.contact.function_name
 }
+
+output "cognito_user_pool_id" {
+  description = "ID of the Cognito User Pool for admin authentication"
+  value       = aws_cognito_user_pool.admin.id
+}
+
+output "cognito_user_pool_client_id" {
+  description = "ID of the Cognito User Pool Client"
+  value       = aws_cognito_user_pool_client.admin.id
+}
+
+output "cognito_user_pool_endpoint" {
+  description = "Endpoint of the Cognito User Pool"
+  value       = aws_cognito_user_pool.admin.endpoint
+}
+
+output "admin_user_created" {
+  description = "Whether initial admin user was created"
+  value       = var.create_admin_user && var.admin_email != ""
+}

@@ -33,3 +33,15 @@ variable "lambda_zip_path" {
   type        = string
   default     = "../../apps/services/contact-lambda/handler.zip"
 }
+
+variable "admin_email" {
+  description = "Email address for initial admin user"
+  type        = string
+  default     = ""
+}
+
+variable "create_admin_user" {
+  description = "Whether to create initial admin user"
+  type        = bool
+  default     = false
+}

@@ -14,3 +14,8 @@ environment  = "production"
 
 # Optional: Path to Lambda deployment package
 # lambda_zip_path = "../../apps/services/contact-lambda/dist/handler.zip"
+
+# Optional: Admin user configuration
+# Set to true and provide email to create initial admin user
+# create_admin_user = true
+# admin_email = "admin@example.com"
