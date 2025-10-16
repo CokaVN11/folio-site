@@ -31,7 +31,7 @@ variable "site_origin" {
 variable "lambda_zip_path" {
   description = "Path to Lambda deployment package"
   type        = string
-  default     = "../../apps/services/contact-lambda/handler.zip"
+  default     = "../../apps/services/lambda/handler.zip"
 }
 
 variable "admin_email" {

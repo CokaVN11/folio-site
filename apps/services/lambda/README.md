@@ -25,16 +25,16 @@ AWS Lambda function that processes contact form submissions and stores them in D
 pnpm install
 
 # Build Lambda
-pnpm --filter contact-lambda build
+pnpm --filter lambda build
 
 # Clean build artifacts
-pnpm --filter contact-lambda clean
+pnpm --filter lambda clean
 ```
 
 ## Structure
 
 ```
-apps/services/contact-lambda/
+apps/services/lambda/
 ├── src/
 │   ├── handler.ts    # Lambda entry point
 │   ├── dto.ts        # Data transfer objects and schemas
@@ -104,10 +104,10 @@ Set by Terraform during deployment:
 
 ```bash
 # Build TypeScript to JavaScript
-pnpm --filter contact-lambda build
+pnpm --filter lambda build
 
 # Package for Lambda
-cd apps/services/contact-lambda/dist
+cd apps/services/lambda/dist
 zip -r ../handler.zip .
 ```
 

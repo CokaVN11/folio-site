@@ -37,10 +37,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Lambda
-        run: pnpm --filter contact-lambda build
+        run: pnpm --filter lambda build
 
       - name: Package Lambda
-        working-directory: apps/services/contact-lambda
+        working-directory: apps/services/lambda
         run: |
           cd dist
           zip -r handler.zip .
@@ -77,7 +77,7 @@ jobs:
         working-directory: infra/terraform
         run: |
           terraform plan \
-            -var="lambda_zip_path=../../apps/services/contact-lambda/handler.zip" \
+            -var="lambda_zip_path=../../apps/services/lambda/handler.zip" \
             -var="environment=dev" \
             -out=tfplan
 

@@ -13,7 +13,7 @@ environment  = "production"
 # site_origin = "https://example.com"
 
 # Optional: Path to Lambda deployment package
-# lambda_zip_path = "../../apps/services/contact-lambda/dist/handler.zip"
+# lambda_zip_path = "../../apps/services/lambda/dist/handler.zip"
 
 # Optional: Admin user configuration
 # Set to true and provide email to create initial admin user
