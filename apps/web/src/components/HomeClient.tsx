@@ -22,8 +22,8 @@ export function HomeClient({ className = '' }: HomeClientProps) {
                 <Link href="/" className="transition-colors hover:text-primary">
                   Home
                 </Link>
-                <Link href="/exp" className="transition-colors hover:text-primary">
-                  Experience
+                <Link href="/project" className="transition-colors hover:text-primary">
+                  Projects
                 </Link>
                 <Link href="/job" className="transition-colors hover:text-primary">
                   Career
@@ -61,7 +61,7 @@ export function HomeClient({ className = '' }: HomeClientProps) {
               Get in Touch
             </a>
             <Link
-              href="/exp"
+              href="/project"
               className="px-6 py-3 transition-colors border rounded-md hover:bg-accent border-border"
             >
               View Projects

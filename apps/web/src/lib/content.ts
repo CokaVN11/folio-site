@@ -20,14 +20,14 @@ async function readMDXFile(filePath: string): Promise<Entry> {
 }
 
 export async function getProject(): Promise<Entry[]> {
-  const expDirectory = path.join(contentDirectory, 'exp');
+  const projectDirectory = path.join(contentDirectory, 'project');
 
   try {
-    const fileNames = await fs.readdir(expDirectory);
+    const fileNames = await fs.readdir(projectDirectory);
     const mdxFiles = fileNames.filter((name) => name.endsWith('.mdx'));
 
     const entries = await Promise.all(
-      mdxFiles.map((file) => readMDXFile(path.join(expDirectory, file)))
+      mdxFiles.map((file) => readMDXFile(path.join(projectDirectory, file)))
     );
 
     // Filter out drafts and sort by date descending
@@ -35,7 +35,7 @@ export async function getProject(): Promise<Entry[]> {
       .filter((entry) => !entry.metadata.draft)
       .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
   } catch (error) {
-    console.error('Error reading experience content:', error);
+    console.error('Error reading project content:', error);
     return [];
   }
 }
@@ -63,7 +63,7 @@ export async function getJobs(): Promise<Entry[]> {
 
 export async function getProjectEntry(slug: string): Promise<Entry | null> {
   try {
-    const filePath = path.join(contentDirectory, 'exp', `${slug}.mdx`);
+    const filePath = path.join(contentDirectory, 'project', `${slug}.mdx`);
     const entry = await readMDXFile(filePath);
 
     // Don't return draft entries

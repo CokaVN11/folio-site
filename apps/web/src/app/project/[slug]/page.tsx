@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${entry.metadata.title} - Experience`,
+    title: `${entry.metadata.title} - Projects`,
     description: entry.metadata.summary,
     openGraph: {
       title: entry.metadata.title,
@@ -58,9 +58,9 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
     keywords: entry.metadata.tags?.join(', '),
     author: {
       '@type': 'Person',
-      name: 'Coka',
+      name: 'Khanh Nguyen',
     },
-    url: `https://coka.dev/exp/${entry.slug}`,
+    url: `https://portfolio.coka.id.vn/project/${entry.slug}`,
   };
 
   return (
@@ -76,7 +76,7 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
           {/* Back Navigation */}
           <div className="mb-8">
             <Link
-              href="/exp"
+              href="/project"
               className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +87,7 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
                 />
               </svg>
-              Back to Experience
+              Back to Projects
             </Link>
           </div>
 
@@ -221,7 +221,10 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
           {/* Footer */}
           <footer className="mt-16 pt-8 border-t border-border">
             <div className="text-center">
-              <Link href="/exp" className="inline-flex items-center text-primary hover:underline">
+              <Link
+                href="/project"
+                className="inline-flex items-center text-primary hover:underline"
+              >
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -230,7 +233,7 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Back to all experience
+                Back to all projects
               </Link>
             </div>
           </footer>

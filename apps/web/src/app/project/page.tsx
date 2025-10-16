@@ -4,14 +4,14 @@ import { getProject } from '@/lib/content';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Experience - Coka Portfolio',
+  title: 'Projects - Khanh Nguyen Portfolio',
   description:
     'Collection of projects and experiences in frontend development, UI/UX design, and full-stack engineering.',
   openGraph: {
-    title: 'Experience - Coka Portfolio',
+    title: 'Projects - Khanh Nguyen Portfolio',
     description:
       'Collection of projects and experiences in frontend development, UI/UX design, and full-stack engineering.',
-    url: '/exp',
+    url: '/project',
     type: 'website',
   },
 };
@@ -24,7 +24,7 @@ export default async function ExpPage() {
       <div className="container px-4 py-16 mx-auto">
         {/* Header */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold text-foreground">Experience</h1>
+          <h1 className="mb-4 text-4xl font-bold text-foreground">Projects</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             A collection of projects showcasing my work in frontend development, UI/UX design, and
             full-stack engineering.
@@ -39,7 +39,7 @@ export default async function ExpPage() {
                 key={entry.slug}
                 className="group relative border rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 border-border"
               >
-                <Link href={`/exp/${entry.slug}`}>
+                <Link href={`/project/${entry.slug}`}>
                   <div className="flex flex-col md:flex-row">
                     {/* Cover Image */}
                     {entry.metadata.cover && (

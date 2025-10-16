@@ -4,7 +4,7 @@ import { getProject, getJobs } from '@/lib/content';
 export const dynamic = 'force-static';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [expEntries, jobEntries] = await Promise.all([getProject(), getJobs()]);
+  const [projectEntries, jobEntries] = await Promise.all([getProject(), getJobs()]);
 
   const baseUrl = 'https://portfolio.coka.id.vn';
 
@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1,
     },
     {
-      url: `${baseUrl}/exp`,
+      url: `${baseUrl}/project`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
@@ -33,8 +33,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
-    ...expEntries.map((entry) => ({
-      url: `${baseUrl}/exp/${entry.slug}`,
+    ...projectEntries.map((entry) => ({
+      url: `${baseUrl}/project/${entry.slug}`,
       lastModified: new Date(entry.metadata.date),
       changeFrequency: 'monthly' as const,
       priority: 0.6,
