@@ -12,6 +12,8 @@ permissions:
 env:
   AWS_REGION: ap-southeast-1
   TERRAFORM_VERSION: 1.13.3
+  DOMAIN_NAME: ${{ secrets.DOMAIN_NAME || 'portfolio.coka.id.vn' }}
+  SITE_ORIGIN: ${{ secrets.SITE_ORIGIN || 'https://portfolio.coka.id.vn' }}
 
 jobs:
   deploy:
@@ -37,10 +39,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Lambda
-        run: pnpm --filter contact-lambda build
+        run: pnpm --filter lambda build
 
       - name: Package Lambda
-        working-directory: apps/services/contact-lambda
+        working-directory: apps/services/lambda
         run: |
           cd dist
           zip -r handler.zip .
@@ -77,8 +79,10 @@ jobs:
         working-directory: infra/terraform
         run: |
           terraform plan \
-            -var="lambda_zip_path=../../apps/services/contact-lambda/handler.zip" \
+            -var="lambda_zip_path=../../apps/services/lambda/handler.zip" \
             -var="environment=dev" \
+            -var="domain_name=${{ env.DOMAIN_NAME }}" \
+            -var="site_origin=${{ env.SITE_ORIGIN }}" \
             -out=tfplan
 
       - name: Terraform Apply

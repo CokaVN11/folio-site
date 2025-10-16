@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "pnpm --filter web dev",
     "build:web": "pnpm --filter web build",
-    "build:lambda": "pnpm --filter contact-lambda build",
-    "build:all": "pnpm --filter web build && pnpm --filter contact-lambda build",
+    "build:lambda": "pnpm --filter lambda build",
+    "build:all": "pnpm --filter web build && pnpm --filter lambda build",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "lint": "pnpm --filter web lint",
     "type-check": "tsc --build",
-    "clean": "pnpm --filter web clean && pnpm --filter contact-lambda clean"
+    "clean": "pnpm --filter web clean && pnpm --filter lambda clean"
   },
   "keywords": [
     "portfolio",

@@ -69,11 +69,10 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
-    # For custom domain, you would need:
-    # acm_certificate_arn      = aws_acm_certificate.cert.arn
-    # ssl_support_method       = "sni-only"
-    # minimum_protocol_version = "TLSv1.2_2021"
+    acm_certificate_arn      = var.domain_name != "" ? var.certificate_arn : null
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
+    cloudfront_default_certificate = var.domain_name == ""
   }
 
   tags = {

@@ -6,11 +6,12 @@ project_name = "folio-site"
 environment  = "production"
 
 # Optional: Provide a custom domain name to enable CloudFront with custom domain
-# domain_name = "example.com"
+domain_name = "portfolio.coka.id.vn"
 
 # Optional: Custom site origin for CORS (if not provided, will use wildcard)
 # After deployment, update this to your CloudFront domain or custom domain
-# site_origin = "https://example.com"
+site_origin = "https://portfolio.coka.id.vn"
 
 # Optional: Path to Lambda deployment package
-# lambda_zip_path = "../../apps/services/contact-lambda/dist/handler.zip"
+# lambda_zip_path = "../../apps/services/lambda/dist/handler.zip"
+

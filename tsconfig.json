@@ -17,7 +17,7 @@
       "path": "./apps/web"
     },
     {
-      "path": "./apps/services/contact-lambda"
+      "path": "./apps/services/lambda"
     }
   ],
   "files": []

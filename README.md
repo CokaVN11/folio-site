@@ -32,7 +32,7 @@ folio-site/
 │   │   │   └── styles/        # Global styles
 │   │   └── package.json
 │   └── services/
-│       └── contact-lambda/    # AWS Lambda for contact form
+│       └── lambda/    # AWS Lambda for contact form
 │           ├── src/
 │           │   ├── handler.ts # Lambda entry point
 │           │   ├── dto.ts     # Data schemas
@@ -135,7 +135,7 @@ pnpm build:all
 pnpm --filter web build
 
 # Build Lambda function
-pnpm --filter contact-lambda build
+pnpm --filter lambda build
 ```
 
 ## 🚀 Deployment
@@ -160,16 +160,16 @@ The project uses GitHub Actions for automated deployment:
 
 ```bash
 # Build Lambda
-pnpm --filter contact-lambda build
+pnpm --filter lambda build
 
 # Package Lambda
-cd apps/services/contact-lambda/dist
+cd apps/services/lambda/dist
 zip -r ../handler.zip .
 cd ../../../..
 
 # Apply Terraform with Lambda package
 cd infra/terraform
-terraform apply -var="lambda_zip_path=../../apps/services/contact-lambda/handler.zip"
+terraform apply -var="lambda_zip_path=../../apps/services/lambda/handler.zip"
 
 # Build and deploy web
 cd ../..
@@ -238,7 +238,7 @@ pnpm --filter web lint
 
 - `NEXT_PUBLIC_API_URL` - API Gateway endpoint URL
 
-### Lambda (`apps/services/contact-lambda`)
+### Lambda (`apps/services/lambda`)
 
 - `TABLE_NAME` - DynamoDB table name (set by Terraform)
 - `AWS_REGION` - AWS region (set by Terraform)
@@ -284,8 +284,8 @@ terraform plan
 
 ```bash
 # Rebuild and repackage
-pnpm --filter contact-lambda build
-cd apps/services/contact-lambda/dist
+pnpm --filter lambda build
+cd apps/services/lambda/dist
 zip -r ../handler.zip .
 cd ../../..
 

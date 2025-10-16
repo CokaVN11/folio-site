@@ -35,7 +35,9 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
         Action = [
           "dynamodb:PutItem",
           "dynamodb:GetItem",
-          "dynamodb:Query"
+          "dynamodb:Query",
+          "dynamodb:UpdateItem",
+          "dynamodb:DeleteItem"
         ]
         Resource = [
           aws_dynamodb_table.contact_messages.arn,
@@ -46,9 +48,34 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
   })
 }
 
+# Policy for S3 access (reduced to only contact form uploads if needed)
+resource "aws_iam_role_policy" "lambda_s3" {
+  name = "${var.project_name}-lambda-s3-policy"
+  role = aws_iam_role.lambda.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          aws_s3_bucket.site.arn,
+          "${aws_s3_bucket.site.arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
 # Lambda function
 resource "aws_lambda_function" "contact" {
-  function_name = "${var.project_name}-contact-${var.environment}"
+  function_name = "${var.project_name}-api-${var.environment}"
   role          = aws_iam_role.lambda.arn
   handler       = "handler.handler"
   runtime       = "nodejs20.x"
@@ -62,6 +89,7 @@ resource "aws_lambda_function" "contact" {
   environment {
     variables = {
       TABLE_NAME = aws_dynamodb_table.contact_messages.name
+      ALLOWED_ORIGIN = var.site_origin != "" ? var.site_origin : "*"
     }
   }
 
@@ -71,7 +99,8 @@ resource "aws_lambda_function" "contact" {
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_basic,
-    aws_iam_role_policy.lambda_dynamodb
+    aws_iam_role_policy.lambda_dynamodb,
+    aws_iam_role_policy.lambda_s3
   ]
 }
 
