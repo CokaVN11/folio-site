@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { MobileNavigation } from './MobileNavigation';
 
 interface HomeClientProps {
   className?: string;
@@ -17,8 +18,8 @@ export function HomeClient({ className = '' }: HomeClientProps) {
             <h1 className="text-2xl font-bold">Portfolio</h1>
 
             <div className="flex items-center gap-6">
-              {/* Navigation Links */}
-              <div className="flex gap-6">
+              {/* Desktop Navigation Links */}
+              <div className="hidden md:flex gap-6">
                 <Link href="/" className="transition-colors hover:text-primary">
                   Home
                 </Link>
@@ -33,6 +34,9 @@ export function HomeClient({ className = '' }: HomeClientProps) {
                 </Link>
               </div>
 
+              {/* Mobile Navigation */}
+              <MobileNavigation />
+
               {/* Theme Toggle */}
               <ThemeToggle />
             </div>
@@ -43,17 +47,21 @@ export function HomeClient({ className = '' }: HomeClientProps) {
       {/* Hero Section */}
       <section className="container px-4 py-20 mx-auto">
         <div className="max-w-4xl">
-          <h2 className="mb-6 text-5xl font-bold">
+          <h2 className="mb-6 text-3xl font-bold sm:text-4xl md:text-5xl">
             Hi, I&apos;m <span className="text-primary">Khanh Nguyen</span>
           </h2>
           <p className="mb-4 text-xl text-muted-foreground">
             Full-stack developer specializing in modern web applications with React, Next.js,
             Vue.js, and scalable backend systems.
           </p>
-          <div className="mb-6 text-lg text-muted-foreground">
-            📍 Ho Chi Minh City, Vietnam | 📧 nguyenckhanh71@gmail.com | 📱 (+84)868 750 030
+          <div className="mb-6 text-center text-lg text-muted-foreground sm:text-left">
+            <div className="flex flex-col gap-1 sm:flex-row sm:gap-4">
+              <span>📍 Ho Chi Minh City, Vietnam</span>
+              <span>📧 nguyenckhanh71@gmail.com</span>
+              <span>📱 (+84)868 750 030</span>
+            </div>
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row">
             <a
               href="mailto:nguyenckhanh71@gmail.com"
               className="px-6 py-3 transition-opacity rounded-md bg-primary hover:opacity-90 text-primary-foreground"
@@ -109,22 +117,22 @@ export function HomeClient({ className = '' }: HomeClientProps) {
       {/* Skills Section */}
       <section className="container px-4 py-16 mx-auto">
         <h3 className="mb-8 text-3xl font-bold">Technical Skills</h3>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-          <div className="p-6 border rounded-lg border-border">
-            <h4 className="mb-2 text-xl font-semibold">Frontend</h4>
-            <p className="text-muted-foreground">React, Next.js, Vue.js, TailwindCSS</p>
+        <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="p-4 sm:p-6 border rounded-lg border-border hover:shadow-md transition-shadow duration-300">
+            <h4 className="mb-2 text-lg sm:text-xl font-semibold">Frontend</h4>
+            <p className="text-sm sm:text-base text-muted-foreground">React, Next.js, Vue.js, TailwindCSS</p>
           </div>
-          <div className="p-6 border rounded-lg border-border">
-            <h4 className="mb-2 text-xl font-semibold">Backend</h4>
-            <p className="text-muted-foreground">NestJS, FastAPI, Golang, Python, Java</p>
+          <div className="p-4 sm:p-6 border rounded-lg border-border hover:shadow-md transition-shadow duration-300">
+            <h4 className="mb-2 text-lg sm:text-xl font-semibold">Backend</h4>
+            <p className="text-sm sm:text-base text-muted-foreground">NestJS, FastAPI, Golang, Python, Java</p>
           </div>
-          <div className="p-6 border rounded-lg border-border">
-            <h4 className="mb-2 text-xl font-semibold">Cloud & DevOps</h4>
-            <p className="text-muted-foreground">Docker, CI/CD, GitHub Actions, GitLab</p>
+          <div className="p-4 sm:p-6 border rounded-lg border-border hover:shadow-md transition-shadow duration-300">
+            <h4 className="mb-2 text-lg sm:text-xl font-semibold">Cloud & DevOps</h4>
+            <p className="text-sm sm:text-base text-muted-foreground">Docker, CI/CD, GitHub Actions, GitLab</p>
           </div>
-          <div className="p-6 border rounded-lg border-border">
-            <h4 className="mb-2 text-xl font-semibold">Developer Tools</h4>
-            <p className="text-muted-foreground">Git, GitHub, GitLab, Webpack, Postman</p>
+          <div className="p-4 sm:p-6 border rounded-lg border-border hover:shadow-md transition-shadow duration-300">
+            <h4 className="mb-2 text-lg sm:text-xl font-semibold">Developer Tools</h4>
+            <p className="text-sm sm:text-base text-muted-foreground">Git, GitHub, GitLab, Webpack, Postman</p>
           </div>
         </div>
       </section>

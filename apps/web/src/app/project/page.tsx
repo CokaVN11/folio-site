@@ -33,7 +33,7 @@ export default async function ExpPage() {
 
         {/* Experience Grid */}
         {entries.length > 0 ? (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-1">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-2">
             {entries.map((entry) => (
               <article
                 key={entry.slug}
@@ -50,6 +50,7 @@ export default async function ExpPage() {
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 33vw"
+                          loading="lazy"
                         />
                       </div>
                     )}
@@ -85,30 +86,40 @@ export default async function ExpPage() {
                       {/* Technologies */}
                       {entry.metadata.tech && entry.metadata.tech.length > 0 && (
                         <div className="mb-4">
-                          <div className="flex flex-wrap gap-2">
-                            {entry.metadata.tech.map((tech) => (
+                          <div className="flex flex-wrap gap-1 sm:gap-2">
+                            {entry.metadata.tech.slice(0, 4).map((tech) => (
                               <span
                                 key={tech}
-                                className="px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded"
+                                className="px-2 py-1 text-xs font-medium bg-secondary text-secondary-foreground rounded sm:rounded-md"
                               >
                                 {tech}
                               </span>
                             ))}
+                            {entry.metadata.tech.length > 4 && (
+                              <span className="px-2 py-1 text-xs font-medium bg-muted text-muted-foreground rounded sm:rounded-md">
+                                +{entry.metadata.tech.length - 4} more
+                              </span>
+                            )}
                           </div>
                         </div>
                       )}
 
                       {/* Tags */}
                       {entry.metadata.tags && entry.metadata.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {entry.metadata.tags.map((tag) => (
+                        <div className="flex flex-wrap gap-1 sm:gap-2">
+                          {entry.metadata.tags.slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded"
+                              className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded sm:rounded-md"
                             >
                               #{tag}
                             </span>
                           ))}
+                          {entry.metadata.tags.length > 3 && (
+                            <span className="px-2 py-1 text-xs bg-muted text-muted-foreground rounded sm:rounded-md">
+                              +{entry.metadata.tags.length - 3}
+                            </span>
+                          )}
                         </div>
                       )}
 
