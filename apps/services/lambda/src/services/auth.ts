@@ -117,7 +117,7 @@ export function extractUserInfo(payload: JwtPayload) {
   return {
     sub: payload.sub,
     email: payload.email,
-    username: payload['cognito:username'],
+    username: payload['cognito:name'],
     groups: (payload['cognito:groups'] as string[]) || [],
   };
 }
