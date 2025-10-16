@@ -14,13 +14,21 @@ import {
 } from '../shared/responses.js';
 import { requireAuthentication, isAdminUser, extractUserInfo } from '../services/auth.js';
 import {
-  ContentCreatePayloadSchema,
-  ProjectDescriptionSchema,
-  SectionIndexSchema,
+  ExperienceCreatePayloadSchema,
+  ProjectCreatePayloadSchema,
+  EducationCreatePayloadSchema,
+  ExperienceSchema,
+  ProjectSchema,
+  EducationSchema,
+  ContentSchema,
   VALID_SECTIONS,
-  type ContentCreatePayload,
-  type ProjectDescription,
-  type SectionIndex,
+  type ExperienceCreatePayload,
+  type ProjectCreatePayload,
+  type EducationCreatePayload,
+  type Experience,
+  type Project,
+  type Education,
+  type Content,
 } from '../schemas/content.js';
 import {
   createContentDirectory,
@@ -85,59 +93,148 @@ export async function handleContentCreate(
       );
     }
 
-    // Validate request body
-    const bodyValidation = validateRequestBody(event, ContentCreatePayloadSchema);
-    if (!bodyValidation.success) {
-      return handleValidationError(bodyValidation, origin);
+    // Parse request body first to determine content type
+    let requestBody;
+    try {
+      requestBody = JSON.parse(event.body || '{}');
+    } catch (error) {
+      return errorResponse('Invalid JSON in request body', 400, undefined, origin);
     }
 
-    const payload: ContentCreatePayload = bodyValidation.data;
+    // Validate based on section type
+    let payload: ExperienceCreatePayload | ProjectCreatePayload | EducationCreatePayload;
+    let bodyValidation;
 
-    // Check if project already exists
+    switch (section) {
+      case 'experience':
+        bodyValidation = {
+          success: true,
+          data: ExperienceCreatePayloadSchema.safeParse(requestBody),
+        };
+        if (!bodyValidation.data.success) {
+          return handleValidationError({
+            success: false,
+            errors: bodyValidation.data.error.errors.map((err: any) => ({
+              field: err.path.join('.'),
+              message: err.message,
+            })),
+          }, origin);
+        }
+        payload = bodyValidation.data.data;
+        break;
+
+      case 'projects':
+        bodyValidation = {
+          success: true,
+          data: ProjectCreatePayloadSchema.safeParse(requestBody),
+        };
+        if (!bodyValidation.data.success) {
+          return handleValidationError({
+            success: false,
+            errors: bodyValidation.data.error.errors.map((err: any) => ({
+              field: err.path.join('.'),
+              message: err.message,
+            })),
+          }, origin);
+        }
+        payload = bodyValidation.data.data;
+        break;
+
+      case 'education':
+        bodyValidation = {
+          success: true,
+          data: EducationCreatePayloadSchema.safeParse(requestBody),
+        };
+        if (!bodyValidation.data.success) {
+          return handleValidationError({
+            success: false,
+            errors: bodyValidation.data.error.errors.map((err: any) => ({
+              field: err.path.join('.'),
+              message: err.message,
+            })),
+          }, origin);
+        }
+        payload = bodyValidation.data.data;
+        break;
+
+      default:
+        return errorResponse(
+          `Invalid section: ${section}. Must be one of: ${VALID_SECTIONS.join(', ')}`,
+          400,
+          undefined,
+          origin
+        );
+    }
+
+    // Check if content already exists
     const descKey = generateDescKey(section, slug);
     if (await objectExists(descKey)) {
-      return conflictResponse(`Project '${slug}' already exists in section '${section}'`, origin);
+      return conflictResponse(`Content '${slug}' already exists in section '${section}'`, origin);
     }
 
-    // Create project description
-    const projectDesc: ProjectDescription = {
-      ...payload,
-      indexEntry: payload.indexEntry || {
-        title: payload.title,
-        summary: payload.summary,
-        cover: payload.media[0]?.src || '',
-        tags: payload.tech,
-        year: payload.year,
-        slug,
-      },
-    };
+    // Create structured content based on section type
+    let contentData: Experience | Project | Education;
+    let indexEntry;
 
-    // Validate project description
-    const descValidation = ProjectDescriptionSchema.safeParse(projectDesc);
-    if (!descValidation.success) {
-      return handleValidationError(
-        {
-          success: false,
-          errors: descValidation.error.errors.map((err) => ({
-            field: err.path.join('.'),
-            message: err.message,
-          })),
-        },
-        origin
-      );
+    switch (section) {
+      case 'experience':
+        contentData = ExperienceSchema.parse(payload);
+        indexEntry = {
+          title: contentData.title,
+          summary: contentData.summary,
+          cover: contentData.media[0]?.src || '',
+          tags: contentData.tech,
+          year: parseInt(contentData.start_date.split('-')[0]), // Extract year from date
+          slug,
+        };
+        break;
+
+      case 'projects':
+        contentData = ProjectSchema.parse(payload);
+        indexEntry = {
+          title: contentData.title,
+          summary: contentData.summary,
+          cover: contentData.media[0]?.src || '',
+          tags: contentData.tech,
+          year: parseInt(contentData.start_date.split('-')[0]), // Extract year from date
+          slug,
+        };
+        break;
+
+      case 'education':
+        contentData = EducationSchema.parse(payload);
+        indexEntry = {
+          title: `${contentData.degree} - ${contentData.institution}`,
+          summary: contentData.description || contentData.achievements.join(', '),
+          cover: contentData.media[0]?.src || '',
+          tags: contentData.coursework || [],
+          year: parseInt(contentData.start_date.split('-')[0]), // Extract year from date
+          slug,
+        };
+        break;
+
+      default:
+        return errorResponse(`Unsupported section: ${section}`, 400, undefined, origin);
     }
 
     // Create content directory structure
     await createContentDirectory(section, slug);
 
-    // Upload description file
-    await uploadToS3(descKey, formatJsonForStorage(projectDesc), {
+    // Upload content data with metadata
+    const contentWithMetadata = {
+      ...contentData,
+      indexEntry,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    await uploadToS3(descKey, formatJsonForStorage(contentWithMetadata), {
       contentType: 'application/json',
       cacheControl: 'no-cache',
     });
 
     // Update section index
-    await updateSectionIndex(section, projectDesc.indexEntry);
+    await updateSectionIndex(section, indexEntry);
 
     const userInfo = extractUserInfo(authResult.payload!);
 
@@ -145,8 +242,9 @@ export async function handleContentCreate(
       {
         slug,
         s3Prefix: `content/${section}/${slug}/`,
-        message: 'Project created successfully',
+        message: `${section.charAt(0).toUpperCase() + section.slice(1)} created successfully`,
         createdBy: userInfo.username,
+        contentType: section,
       },
       201,
       origin
@@ -169,12 +267,12 @@ export async function handleContentCreate(
  */
 async function updateSectionIndex(section: string, newEntry: any): Promise<void> {
   const indexKey = generateSectionIndexKey(section);
-  let sectionIndex: SectionIndex;
+  let sectionIndex: any;
 
   // Try to get existing index
-  const existingIndex = await parseJsonFromS3<SectionIndex>(indexKey);
+  const existingIndex = await parseJsonFromS3<any>(indexKey);
 
-  if (existingIndex) {
+  if (existingIndex && existingIndex.entries) {
     // Add new entry to existing index
     sectionIndex = {
       ...existingIndex,

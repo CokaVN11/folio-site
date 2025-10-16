@@ -14,11 +14,19 @@ import {
 } from '../shared/responses.js';
 import { requireAuthentication, isAdminUser, extractUserInfo } from '../services/auth.js';
 import {
-  ContentEditPayloadSchema,
-  ProjectDescriptionSchema,
+  ExperienceEditPayloadSchema,
+  ProjectEditPayloadSchema,
+  EducationEditPayloadSchema,
+  ExperienceSchema,
+  ProjectSchema,
+  EducationSchema,
   VALID_SECTIONS,
-  type ContentEditPayload,
-  type ProjectDescription,
+  type ExperienceEditPayload,
+  type ProjectEditPayload,
+  type EducationEditPayload,
+  type Experience,
+  type Project,
+  type Education,
 } from '../schemas/content.js';
 import {
   generateDescKey,
@@ -81,60 +89,191 @@ export async function handleContentEdit(
       );
     }
 
-    // Validate request body
-    const bodyValidation = validateRequestBody(event, ContentEditPayloadSchema);
-    if (!bodyValidation.success) {
-      return handleValidationError(bodyValidation, origin);
+    // Parse request body first to determine content type
+    let requestBody;
+    try {
+      requestBody = JSON.parse(event.body || '{}');
+    } catch (error) {
+      return errorResponse('Invalid JSON in request body', 400, undefined, origin);
     }
 
-    const updates: ContentEditPayload = bodyValidation.data;
+    // Validate based on section type
+    let updates: ExperienceEditPayload | ProjectEditPayload | EducationEditPayload;
 
-    // Check if project exists
+    switch (section) {
+      case 'experience':
+        const expValidation = ExperienceEditPayloadSchema.safeParse(requestBody);
+        if (!expValidation.success) {
+          return handleValidationError({
+            success: false,
+            errors: expValidation.error.errors.map((err: any) => ({
+              field: err.path.join('.'),
+              message: err.message,
+            })),
+          }, origin);
+        }
+        updates = expValidation.data;
+        break;
+
+      case 'projects':
+        const projValidation = ProjectEditPayloadSchema.safeParse(requestBody);
+        if (!projValidation.success) {
+          return handleValidationError({
+            success: false,
+            errors: projValidation.error.errors.map((err: any) => ({
+              field: err.path.join('.'),
+              message: err.message,
+            })),
+          }, origin);
+        }
+        updates = projValidation.data;
+        break;
+
+      case 'education':
+        const eduValidation = EducationEditPayloadSchema.safeParse(requestBody);
+        if (!eduValidation.success) {
+          return handleValidationError({
+            success: false,
+            errors: eduValidation.error.errors.map((err: any) => ({
+              field: err.path.join('.'),
+              message: err.message,
+            })),
+          }, origin);
+        }
+        updates = eduValidation.data;
+        break;
+
+      default:
+        return errorResponse(
+          `Invalid section: ${section}. Must be one of: ${VALID_SECTIONS.join(', ')}`,
+          400,
+          undefined,
+          origin
+        );
+    }
+
+    // Check if content exists
     const descKey = generateDescKey(section, slug);
     if (!(await objectExists(descKey))) {
-      return notFoundResponse(`Project '${slug}' not found in section '${section}'`, origin);
+      return notFoundResponse(`${section} '${slug}' not found`, origin);
     }
 
-    // Get existing project description
-    const existingDesc = await parseJsonFromS3<ProjectDescription>(descKey);
-    if (!existingDesc) {
-      return notFoundResponse(`Project description not found for '${slug}'`, origin);
+    // Get existing content
+    const existingContent = await parseJsonFromS3<any>(descKey);
+    if (!existingContent) {
+      return notFoundResponse(`Content not found for '${slug}'`, origin);
     }
 
-    // Apply updates to existing description
-    const updatedDesc: ProjectDescription = {
-      ...existingDesc,
-      ...updates,
-      // Merge index entry if provided
-      indexEntry: updates.indexEntry
-        ? { ...existingDesc.indexEntry, ...updates.indexEntry }
-        : existingDesc.indexEntry,
-    };
+    // Extract existing data based on section type
+    let existingData: Experience | Project | Education;
+    switch (section) {
+      case 'experience':
+        existingData = existingData as Experience;
+        break;
+      case 'projects':
+        existingData = existingData as Project;
+        break;
+      case 'education':
+        existingData = existingData as Education;
+        break;
+    }
 
-    // Validate updated description
-    const descValidation = ProjectDescriptionSchema.safeParse(updatedDesc);
-    if (!descValidation.success) {
-      return handleValidationError(
-        {
-          success: false,
-          errors: descValidation.error.errors.map((err) => ({
+    // Apply updates to existing content
+    let updatedData: Experience | Project | Education;
+    let updatedIndexEntry;
+
+    switch (section) {
+      case 'experience':
+        updatedData = { ...existingData as Experience, ...updates } as Experience;
+        updatedIndexEntry = {
+          title: updatedData.title,
+          summary: updatedData.summary,
+          cover: updatedData.media[0]?.src || '',
+          tags: updatedData.tech,
+          year: parseInt(updatedData.start_date.split('-')[0]),
+          slug: slug,
+        };
+        break;
+
+      case 'projects':
+        updatedData = { ...existingData as Project, ...updates } as Project;
+        updatedIndexEntry = {
+          title: updatedData.title,
+          summary: updatedData.summary,
+          cover: updatedData.media[0]?.src || '',
+          tags: updatedData.tech,
+          year: parseInt(updatedData.start_date.split('-')[0]),
+          slug: slug,
+        };
+        break;
+
+      case 'education':
+        updatedData = { ...existingData as Education, ...updates } as Education;
+        updatedIndexEntry = {
+          title: `${updatedData.degree} - ${updatedData.institution}`,
+          summary: updatedData.description || updatedData.achievements.join(', '),
+          cover: updatedData.media[0]?.src || '',
+          tags: updatedData.coursework || [],
+          year: parseInt(updatedData.start_date.split('-')[0]),
+          slug: slug,
+        };
+        break;
+    }
+
+    // Validate updated content
+    let validationSuccess = true;
+    let validationErrors: any[] = [];
+
+    switch (section) {
+      case 'experience':
+        const expValidation = ExperienceSchema.safeParse(updatedData);
+        if (!expValidation.success) {
+          validationSuccess = false;
+          validationErrors = expValidation.error.errors.map((err: any) => ({
             field: err.path.join('.'),
             message: err.message,
-          })),
-        },
-        origin
-      );
+          }));
+        }
+        break;
+
+      case 'projects':
+        const projValidation = ProjectSchema.safeParse(updatedData);
+        if (!projValidation.success) {
+          validationSuccess = false;
+          validationErrors = projValidation.error.errors.map((err: any) => ({
+            field: err.path.join('.'),
+            message: err.message,
+          }));
+        }
+        break;
+
+      case 'education':
+        const eduValidation = EducationSchema.safeParse(updatedData);
+        if (!eduValidation.success) {
+          validationSuccess = false;
+          validationErrors = eduValidation.error.errors.map((err: any) => ({
+            field: err.path.join('.'),
+            message: err.message,
+          }));
+        }
+        break;
+    }
+
+    if (!validationSuccess) {
+      return handleValidationError({
+        success: false,
+        errors: validationErrors,
+      }, origin);
     }
 
     // Handle slug change if requested
     let newSlug = slug;
-    const updatingSlug = updates.indexEntry?.slug;
-    if (updatingSlug && updatingSlug !== slug) {
+    if (updates.slug && updates.slug !== slug) {
       // Validate new slug
-      const newSlugKey = generateDescKey(section, updatingSlug);
+      const newSlugKey = generateDescKey(section, updates.slug);
       if (await objectExists(newSlugKey)) {
         return errorResponse(
-          `Project with slug '${updatingSlug}' already exists`,
+          `${section} with slug '${updates.slug}' already exists`,
           409,
           undefined,
           origin
@@ -142,28 +281,32 @@ export async function handleContentEdit(
       }
 
       // Create new directory
-      await createContentDirectory(section, updatingSlug);
+      await createContentDirectory(section, updates.slug);
 
       // Move all files to new location
-      await moveProjectFiles(section, slug, updatingSlug, updatedDesc);
+      await moveContentFiles(section, slug, updates.slug, updatedData);
 
-      // Update slug in description
-      updatedDesc.indexEntry.slug = updatingSlug;
-      newSlug = updatingSlug;
-
-      // Delete old directory (optional - you might want to keep it for backup)
-      // await deleteProjectDirectory(section, slug);
+      // Update slug in index entry
+      updatedIndexEntry.slug = updates.slug;
+      newSlug = updates.slug;
     }
 
-    // Upload updated description
+    // Create content with metadata
+    const contentWithMetadata = {
+      ...updatedData,
+      indexEntry: updatedIndexEntry,
+      updatedAt: new Date().toISOString(),
+    };
+
+    // Upload updated content
     const finalDescKey = generateDescKey(section, newSlug);
-    await uploadToS3(finalDescKey, formatJsonForStorage(updatedDesc), {
+    await uploadToS3(finalDescKey, formatJsonForStorage(contentWithMetadata), {
       contentType: 'application/json',
       cacheControl: 'no-cache',
     });
 
     // Update section index
-    await updateSectionIndex(section, updatedDesc.indexEntry, slug);
+    await updateSectionIndex(section, updatedIndexEntry, slug, newSlug);
 
     const userInfo = extractUserInfo(authResult.payload!);
 
@@ -171,7 +314,7 @@ export async function handleContentEdit(
       {
         updated: true,
         slug: newSlug,
-        message: 'Project updated successfully',
+        message: `${section.charAt(0).toUpperCase() + section.slice(1)} updated successfully`,
         updatedBy: userInfo.username,
         updatedAt: new Date().toISOString(),
       },
@@ -199,13 +342,13 @@ async function createContentDirectory(section: string, slug: string): Promise<vo
 }
 
 /**
- * Move project files from old slug to new slug
+ * Move content files from old slug to new slug
  */
-async function moveProjectFiles(
+async function moveContentFiles(
   section: string,
   oldSlug: string,
   newSlug: string,
-  updatedDesc: ProjectDescription
+  updatedData: Experience | Project | Education
 ): Promise<void> {
   const { getFromS3, uploadToS3, generateContentKey } = await import('../services/s3.js');
 
@@ -221,7 +364,7 @@ async function moveProjectFiles(
   }
 
   // Move media files (you might want to implement this based on your actual file structure)
-  for (const media of updatedDesc.media) {
+  for (const media of updatedData.media) {
     const oldKey = generateContentKey(section, oldSlug, media.src);
     const newKey = generateContentKey(section, newSlug, media.src);
 
@@ -237,11 +380,11 @@ async function moveProjectFiles(
 async function updateSectionIndex(
   section: string,
   updatedEntry: any,
-  originalSlug?: string
+  originalSlug?: string,
+  newSlug?: string
 ): Promise<void> {
   const { generateSectionIndexKey, uploadToS3, formatJsonForStorage, parseJsonFromS3 } =
     await import('../services/s3.js');
-  const { SectionIndexSchema } = await import('../schemas/content.js');
 
   const indexKey = generateSectionIndexKey(section);
   const existingIndex = await parseJsonFromS3<any>(indexKey);
@@ -266,12 +409,8 @@ async function updateSectionIndex(
     existingIndex.entries.push(updatedEntry);
   }
 
-  // Validate updated index
-  const indexValidation = SectionIndexSchema.safeParse(existingIndex);
-  if (!indexValidation.success) {
-    console.error('Invalid section index after update:', indexValidation.error);
-    return;
-  }
+  // Update last modified timestamp
+  existingIndex.lastUpdated = new Date().toISOString();
 
   // Upload updated index
   await uploadToS3(indexKey, formatJsonForStorage(existingIndex), {

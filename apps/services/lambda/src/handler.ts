@@ -4,6 +4,8 @@ import { errorResponse } from './shared/responses.js';
 import { handleContactSubmit } from './handlers/contact-submit.js';
 import { handleContentCreate } from './handlers/content-create.js';
 import { handleContentEdit } from './handlers/content-edit.js';
+import { handleContentList } from './handlers/content-list.js';
+import { handleContentGet } from './handlers/content-get.js';
 import { handleUploadUrl } from './handlers/upload-url.js';
 
 /**
@@ -13,6 +15,11 @@ import { handleUploadUrl } from './handlers/upload-url.js';
  * - POST /contact - Contact form submission (public)
  * - POST /admin/{section}/{slug} - Create content (admin only)
  * - PATCH /admin/{section}/{slug} - Edit content (admin only)
+ * - DELETE /admin/{section}/{slug} - Delete content (admin only)
+ * - GET /admin/{section} - List content in section (admin only)
+ * - GET /admin/{section}/{slug} - Get specific content (admin only)
+ * - GET /public/{section} - Public content listing
+ * - GET /public/{section}/{slug} - Public content view
  * - POST /admin/uploads - Get upload URL (admin only)
  */
 export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
@@ -61,6 +68,36 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
 
         event.pathParameters = { section, slug };
         return await handleContentEdit(event);
+      }
+    }
+
+    if (method === 'GET' && path.startsWith('/admin/')) {
+      // Handle admin content listing and retrieval
+      const pathParts = path.split('/').filter(Boolean);
+      if (pathParts.length === 2 && pathParts[0] === 'admin') {
+        const [, section] = pathParts;
+        event.pathParameters = { section };
+        return await handleContentList(event);
+      }
+      if (pathParts.length === 3 && pathParts[0] === 'admin') {
+        const [, section, slug] = pathParts;
+        event.pathParameters = { section, slug };
+        return await handleContentGet(event);
+      }
+    }
+
+    if (method === 'GET' && path.startsWith('/public/')) {
+      // Handle public content listing and retrieval
+      const pathParts = path.split('/').filter(Boolean);
+      if (pathParts.length === 2 && pathParts[0] === 'public') {
+        const [, section] = pathParts;
+        event.pathParameters = { section };
+        return await handleContentList(event);
+      }
+      if (pathParts.length === 3 && pathParts[0] === 'public') {
+        const [, section, slug] = pathParts;
+        event.pathParameters = { section, slug };
+        return await handleContentGet(event);
       }
     }
 
