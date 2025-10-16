@@ -5,15 +5,38 @@ import '../styles/globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Portfolio - Professional Portfolio Website',
+  metadataBase: new URL('https://portfolio.coka.id.vn'),
+  title: 'Khanh Nguyen - Full-Stack Developer Portfolio',
   description:
-    'Full-stack developer portfolio showcasing projects and skills with serverless architecture',
-  keywords: ['portfolio', 'web development', 'full-stack', 'serverless', 'AWS'],
-  authors: [{ name: 'Your Name' }],
+    'Full-stack developer portfolio showcasing projects in React, Next.js, Vue.js, NestJS, and scalable web applications with modern tech stack',
+  keywords: [
+    'portfolio',
+    'web development',
+    'full-stack',
+    'React',
+    'Next.js',
+    'Vue.js',
+    'NestJS',
+    'TypeScript',
+    'Docker',
+  ],
+  authors: [{ name: 'Khanh Nguyen' }],
+  creator: 'Khanh Nguyen',
+  publisher: 'Khanh Nguyen',
   openGraph: {
-    title: 'Portfolio - Professional Portfolio Website',
-    description: 'Full-stack developer portfolio showcasing projects and skills',
+    title: 'Khanh Nguyen - Full-Stack Developer Portfolio',
+    description:
+      'Full-stack developer portfolio showcasing projects in React, Next.js, Vue.js, NestJS, and scalable web applications',
+    url: 'https://portfolio.coka.id.vn',
+    siteName: 'Khanh Nguyen Portfolio',
+    locale: 'en_US',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Khanh Nguyen - Full-Stack Developer Portfolio',
+    description:
+      'Full-stack developer portfolio showcasing projects in React, Next.js, Vue.js, NestJS, and scalable web applications',
   },
 };
 
