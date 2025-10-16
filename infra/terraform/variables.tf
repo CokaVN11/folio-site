@@ -22,6 +22,12 @@ variable "domain_name" {
   default     = ""
 }
 
+variable "site_origin" {
+  description = "Origin URL for CORS settings (defaults to CloudFront distribution)"
+  type        = string
+  default     = ""
+}
+
 variable "lambda_zip_path" {
   description = "Path to Lambda deployment package"
   type        = string

@@ -5,8 +5,12 @@ aws_region   = "ap-southeast-1"
 project_name = "folio-site"
 environment  = "production"
 
-# Optional: Provide a custom domain name to enable CloudFront
+# Optional: Provide a custom domain name to enable CloudFront with custom domain
 # domain_name = "example.com"
+
+# Optional: Custom site origin for CORS (if not provided, will use wildcard)
+# After deployment, update this to your CloudFront domain or custom domain
+# site_origin = "https://example.com"
 
 # Optional: Path to Lambda deployment package
 # lambda_zip_path = "../../apps/services/contact-lambda/dist/handler.zip"
