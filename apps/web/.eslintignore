@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# Environment variables
+.env*
+
+# IDE
+.vscode/
+.idea/
+
+# GameBoy specific
+public/pixels/sprites/cache/
+*.sprite.cache
+gameboy-cache/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.cache/
+.turbo/
+.parcel-cache/

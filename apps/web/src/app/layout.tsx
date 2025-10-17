@@ -32,12 +32,6 @@ export const metadata: Metadata = {
     locale: 'en_US',
     type: 'website',
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Khanh Nguyen - Full-Stack Developer Portfolio',
-    description:
-      'Full-stack developer portfolio showcasing projects in React, Next.js, Vue.js, NestJS, and scalable web applications',
-  },
 };
 
 export default function RootLayout({
