@@ -46,7 +46,7 @@ const staticProjects: StaticProject[] = [
 
 export default async function Home() {
   // Fetch dynamic data
-  const [jobs, projects] = await Promise.all([getJobs(), getProject()]);
+  const [jobs, projects] = await Promise.all([[], []]);
 
   const personSchema = {
     '@context': 'https://schema.org',
