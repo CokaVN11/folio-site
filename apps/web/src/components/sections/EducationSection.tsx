@@ -11,7 +11,7 @@ interface EducationSectionProps {
 
 export function EducationSection({ education }: EducationSectionProps) {
   return (
-    <section className="w-full" aria-labelledby="education-heading">
+    <section className="mx-auto w-full container" aria-labelledby="education-heading">
       <div className="mx-auto">
         <div className="flex flex-col gap-y-4 sm:gap-y-6 min-h-0">
           <BlurFade delay={0.1} inView>

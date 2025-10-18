@@ -8,7 +8,7 @@ interface AboutSectionProps {
 
 export function AboutSection({ blurFadeDelay, summary }: AboutSectionProps) {
   return (
-    <section id="about" className="w-full" aria-labelledby="about-heading">
+    <section id="about" className="mx-auto w-full container" aria-labelledby="about-heading">
       <div className="mx-auto">
         <BlurFade delay={blurFadeDelay * 3}>
           <div>
@@ -24,8 +24,8 @@ export function AboutSection({ blurFadeDelay, summary }: AboutSectionProps) {
         </BlurFade>
 
         <BlurFade delay={blurFadeDelay * 4}>
-          <div className="dark:prose-invert max-w-none font-sans text-gray-600 dark:text-gray-300 text-base sm:text-lg text-justify text-pretty leading-relaxed prose prose-lg">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">{summary}</div>
+          <div className="dark:prose-invert max-w-none font-sans text-foreground text-base sm:text-lg text-justify text-pretty leading-relaxed prose prose-lg">
+            <div className="backdrop-blur-sm">{summary}</div>
           </div>
         </BlurFade>
       </div>

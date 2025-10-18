@@ -8,7 +8,7 @@ interface ProjectsSectionProps {
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
-    <section id="projects" className="mx-auto container" aria-labelledby="projects-heading">
+    <section id="projects" className="mx-auto w-full" aria-labelledby="projects-heading">
       <h2 id="projects-heading" className="mb-8 font-bold text-3xl">
         Featured Projects
       </h2>

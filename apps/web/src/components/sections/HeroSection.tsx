@@ -24,7 +24,7 @@ export function HeroSection({ personalInfo, blurFadeDelay }: HeroSectionProps) {
     .slice(0, 2);
 
   return (
-    <section id="hero">
+    <section id="hero" className="mx-auto w-full container">
       <div className="space-y-6 sm:space-y-8 w-full">
         <div className="flex sm:flex-row flex-col justify-between items-center gap-4 sm:gap-6">
           <div className="flex flex-col flex-1 space-y-2 sm:space-y-1.5 sm:text-left text-center">

@@ -10,6 +10,7 @@ import {
 } from '@/components/sections';
 import { BlurFade } from '@/components/ui/blur-fade';
 import { RESUME, generatePersonSchema } from '@/data/resume';
+import { Separator } from '@radix-ui/react-separator';
 
 const BLUR_FADE_DELAY = 0.04;
 export default async function Home() {
@@ -34,6 +35,8 @@ export default async function Home() {
         />
         <AboutSection blurFadeDelay={BLUR_FADE_DELAY} summary={RESUME.summary} />
 
+        <Separator className="bg-gradient-to-r from-transparent via-[#0070F3] to-transparent w-full h-1" />
+
         {/* Projects Section */}
         <BlurFade delay={BLUR_FADE_DELAY * 7} inView={true} direction="down">
           <ProjectsSection projects={RESUME.projects} />
@@ -49,6 +52,7 @@ export default async function Home() {
           <EducationSection education={RESUME.education} />
         </BlurFade>
 
+        <Separator className="bg-gradient-to-r from-transparent via-[#0070F3] to-transparent w-full h-1" />
         {/* Skills Section */}
         <BlurFade delay={BLUR_FADE_DELAY * 6} inView={true} direction="down">
           <SkillsSection blurFadeDelay={BLUR_FADE_DELAY * 6} skills={RESUME.skills} />

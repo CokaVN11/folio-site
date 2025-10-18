@@ -14,7 +14,7 @@ import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ContactCard } from '@/components/ui/contact-card';
-import { AnimatedShinyText } from '../ui/animated-shiny-text';
+import { SparklesText } from '@/components/ui/sparkles-text';
 
 type ContactFormData = z.infer<typeof ContactPayloadSchema>;
 
@@ -150,10 +150,17 @@ export function ContactSection() {
             <FieldError errors={[form.formState.errors.message]} />
           </Field>
 
-          <Button type="submit" disabled={contactStatus === 'submitting'} className="w-full">
-            <AnimatedShinyText>
+          <Button
+            type="submit"
+            disabled={contactStatus === 'submitting'}
+            className="bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl w-full text-primary-foreground transition-all duration-200"
+          >
+            <SparklesText
+              className="font-semibold text-xl"
+              colors={{ first: '#0070F3', second: '#38bdf8' }}
+            >
               <span>{contactStatus === 'submitting' ? 'Sending...' : 'Send Message'}</span>
-            </AnimatedShinyText>
+            </SparklesText>
           </Button>
         </form>
       </ContactCard>

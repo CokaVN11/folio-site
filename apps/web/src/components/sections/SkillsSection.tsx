@@ -29,6 +29,7 @@ import {
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AnimatedGradientText } from '../ui/animated-gradient-text';
+import { Separator } from '@radix-ui/react-separator';
 
 // TODO(human): Add beautiful spring animations and interactive hover effects
 
@@ -89,12 +90,12 @@ const SkillCard = ({
     <motion.figure
       className={cn(
         'relative w-28 sm:w-32 cursor-pointer overflow-hidden rounded-lg border transition-all duration-200 py-2 px-3',
-        // Clean technological aesthetic
-        'border-gray-200/20 bg-gray-50/50 backdrop-blur-xs',
-        'dark:border-gray-700/30 dark:bg-gray-800/50',
-        // Subtle hover states
-        'hover:border-blue-400/30 hover:bg-blue-50/30',
-        'dark:hover:border-blue-500/30 dark:hover:bg-blue-900/20',
+        // Enhanced contrast for both light and dark modes
+        'border-gray-300/50 bg-white/90 backdrop-blur-xs shadow-sm',
+        'dark:border-gray-600/60 dark:bg-gray-800/95 dark:shadow-lg',
+        // Improved hover states with better contrast
+        'hover:border-blue-500/50 hover:bg-blue-50/40 hover:shadow-md',
+        'dark:hover:border-blue-400/60 dark:hover:bg-blue-900/40 dark:shadow-xl',
         // Focus styles for accessibility
         'focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-1 focus:ring-offset-background'
       )}
@@ -152,7 +153,7 @@ const SkillCard = ({
         </motion.div>
 
         {/* Clean typography */}
-        <figcaption className="font-medium text-gray-600 dark:text-gray-300 text-xs truncate leading-tight">
+        <figcaption className="font-medium text-gray-700 dark:text-gray-200 text-xs truncate leading-tight">
           {name}
         </figcaption>
       </div>
@@ -170,17 +171,9 @@ export function SkillsSection({
   return (
     <section
       id="skills"
-      className="relative mt-4 w-full overflow-hidden"
+      className="relative mx-auto mt-4 w-full overflow-hidden container"
       aria-labelledby="skills-heading"
     >
-      {/* Minimal background decoration */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-blue-50/10 dark:from-blue-950/10 via-purple-50/5 dark:via-purple-950/5 to-pink-50/10 dark:to-pink-950/10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      />
-
       <div className="z-10 relative mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         <BlurFade delay={blurFadeDelay * 3}>
           <motion.div
@@ -213,14 +206,10 @@ export function SkillsSection({
           </motion.div>
         </BlurFade>
 
-        <div className="relative flex flex-col justify-center items-center bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm p-4 sm:p-6 border border-white/20 dark:border-white/10 rounded-2xl w-full overflow-hidden">
+        <div className="relative flex flex-col justify-center items-center backdrop-blur-sm rounded-2xl w-full overflow-hidden">
           {/* Enhanced gradient fade edges */}
-          <div className="left-0 z-20 absolute inset-y-0 bg-gradient-to-r from-background via-background/70 to-transparent w-16 sm:w-20 lg:w-24 pointer-events-none"></div>
-          <div className="right-0 z-20 absolute inset-y-0 bg-gradient-to-l from-background via-background/70 to-transparent w-16 sm:w-20 lg:w-24 pointer-events-none"></div>
-
-          {/* Top and bottom gradients */}
-          <div className="top-0 right-0 left-0 z-20 absolute bg-gradient-to-b from-background via-background/70 to-transparent h-12 sm:h-16 pointer-events-none"></div>
-          <div className="right-0 bottom-0 left-0 z-20 absolute bg-gradient-to-t from-background via-background/70 to-transparent h-12 sm:h-16 pointer-events-none"></div>
+          <div className="left-0 z-20 absolute inset-y-0 bg-gradient-to-r from-background via-background/70 to-transparent w-2 sm:w-4 pointer-events-none"></div>
+          <div className="right-0 z-20 absolute inset-y-0 bg-gradient-to-l from-background via-background/70 to-transparent w-2 sm:w-4 pointer-events-none"></div>
 
           <motion.div
             className="z-10 relative w-full"
@@ -255,7 +244,7 @@ export function SkillsSection({
               </Marquee>
             </div>
 
-            <div className="mt-2 sm:mt-4 overflow-hidden">
+            <div className="mt-1 sm:mt-2 overflow-hidden">
               <Marquee pauseOnHover className="[--duration:30s] [--gap:0.75rem]" reverse={true}>
                 {secondRow.map((tech, index) => (
                   <motion.div

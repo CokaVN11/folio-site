@@ -97,6 +97,36 @@
   .animate-marquee-vertical {
     animation: marquee-vertical var(--duration) linear infinite;
   }
+
+  /* Custom dark mode prose fixes */
+  .dark .prose-invert {
+    color: hsl(var(--foreground));
+  }
+
+  .dark .prose-invert p {
+    color: hsl(var(--foreground));
+  }
+
+  .dark .prose-invert h1,
+  .dark .prose-invert h2,
+  .dark .prose-invert h3,
+  .dark .prose-invert h4,
+  .dark .prose-invert h5,
+  .dark .prose-invert h6 {
+    color: hsl(var(--foreground));
+  }
+
+  .dark .prose-invert strong {
+    color: hsl(var(--foreground));
+  }
+
+  .dark .prose-invert em {
+    color: hsl(var(--foreground));
+  }
+
+  .dark .prose-invert code {
+    color: hsl(var(--foreground));
+  }
 }
 
 ::view-transition-old(root),
