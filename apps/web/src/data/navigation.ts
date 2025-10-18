@@ -22,17 +22,17 @@ export const navigationData = {
       icon: Home,
     },
     {
-      href: '/project',
+      href: '#projects',
       label: 'Projects',
       icon: Briefcase,
     },
     {
-      href: '/job',
-      label: 'Career',
+      href: '#experience',
+      label: 'Experience',
       icon: User,
     },
     {
-      href: '/contact',
+      href: '#contact',
       label: 'Contact',
       icon: Mail,
     },

@@ -1,4 +1,4 @@
-import fs from 'fs/promises';
+import { readFile, readdir } from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
 import { Entry, Meta } from './types';
@@ -6,7 +6,7 @@ import { Entry, Meta } from './types';
 const contentDirectory = path.join(process.cwd(), 'src', 'content');
 
 async function readMDXFile(filePath: string): Promise<Entry> {
-  const fileContents = await fs.readFile(filePath, 'utf8');
+  const fileContents = await readFile(filePath, 'utf8');
   const { data, content } = matter(fileContents);
 
   const slug = path.basename(filePath, '.mdx');
@@ -23,7 +23,7 @@ export async function getProject(): Promise<Entry[]> {
   const projectDirectory = path.join(contentDirectory, 'project');
 
   try {
-    const fileNames = await fs.readdir(projectDirectory);
+    const fileNames = await readdir(projectDirectory);
     const mdxFiles = fileNames.filter((name) => name.endsWith('.mdx'));
 
     const entries = await Promise.all(
@@ -44,7 +44,7 @@ export async function getJobs(): Promise<Entry[]> {
   const jobDirectory = path.join(contentDirectory, 'job');
 
   try {
-    const fileNames = await fs.readdir(jobDirectory);
+    const fileNames = await readdir(jobDirectory);
     const mdxFiles = fileNames.filter((name) => name.endsWith('.mdx'));
 
     const entries = await Promise.all(

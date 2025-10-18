@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import '@/styles/globals.css';
+import { cn } from '@/lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,17 @@ export const metadata: Metadata = {
     'TypeScript',
     'Docker',
   ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   authors: [{ name: 'Khanh Nguyen' }],
   creator: 'Khanh Nguyen',
   publisher: 'Khanh Nguyen',
@@ -43,7 +55,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body
+        className={cn(inter.className, 'font-sans antialiased max-w-screen-lg mx-auto')}
+        suppressHydrationWarning
+      >
         <TooltipProvider>
           <ThemeProvider
             attribute="class"

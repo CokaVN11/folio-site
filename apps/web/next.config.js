@@ -15,6 +15,12 @@ const nextConfig = withMDX({
   },
   trailingSlash: true,
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
+  webpack: (config) => {
+    config.resolve.fallback = {
+      fs: false,
+    };
+    return config;
+  },
 });
 
 export default nextConfig;

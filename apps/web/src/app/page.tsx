@@ -1,6 +1,53 @@
-import { HomeClient } from '../components/HomeClient';
+'use client';
+import { getJobs, getProject } from '@/lib/content';
+import Navbar from '@/components/Navbar';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { EducationSection } from '@/components/sections/EducationSection';
+import { SkillsSection } from '@/components/sections/SkillsSection';
+import { ProjectsSection } from '@/components/sections/ProjectsSection';
+import { ExperienceSection } from '@/components/sections/ExperienceSection';
+import { ContactSection } from '@/components/sections/ContactSection';
 
-export default function Home() {
+// Define a type for static projects
+interface StaticProject {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  contribution: string;
+}
+
+const staticProjects: StaticProject[] = [
+  {
+    id: 1,
+    title: 'E-Commerce Platform',
+    description:
+      'Full-stack e-commerce solution with payment integration, inventory management, and admin dashboard.',
+    tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
+    contribution: 'Lead Developer',
+  },
+  {
+    id: 2,
+    title: 'Real-Time Analytics Dashboard',
+    description:
+      'Data visualization platform processing millions of events daily with real-time updates.',
+    tags: ['Next.js', 'AWS Lambda', 'DynamoDB', 'WebSocket'],
+    contribution: 'Backend & Infrastructure',
+  },
+  {
+    id: 3,
+    title: 'Portfolio Website',
+    description:
+      'Modern portfolio website with serverless contact form and Infrastructure as Code deployment.',
+    tags: ['Next.js', 'Lambda', 'Terraform', 'CI/CD'],
+    contribution: 'Solo Project',
+  },
+];
+
+export default async function Home() {
+  // Fetch dynamic data
+  const [jobs, projects] = await Promise.all([getJobs(), getProject()]);
+
   const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -55,7 +102,36 @@ export default function Home() {
           __html: JSON.stringify(personSchema),
         }}
       />
-      <HomeClient />
+      <main className="bg-background min-h-screen">
+        {/* Hero Section */}
+        <HeroSection
+          onContactClick={(e) => {
+            e.preventDefault();
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+              contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+        />
+
+        {/* Education Section */}
+        <EducationSection />
+
+        {/* Skills Section */}
+        <SkillsSection />
+
+        {/* Projects Section */}
+        <ProjectsSection projects={projects.length > 0 ? projects : staticProjects} />
+
+        {/* Experience Section */}
+        <ExperienceSection jobs={jobs} />
+
+        {/* Contact Section */}
+        <ContactSection />
+
+        {/* Dock Navigation */}
+        <Navbar />
+      </main>
     </>
   );
 }
