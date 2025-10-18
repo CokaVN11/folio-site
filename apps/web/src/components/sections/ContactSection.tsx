@@ -14,6 +14,7 @@ import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { ContactCard } from '@/components/ui/contact-card';
+import { AnimatedShinyText } from '../ui/animated-shiny-text';
 
 type ContactFormData = z.infer<typeof ContactPayloadSchema>;
 
@@ -66,7 +67,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="mx-auto px-4 py-20 container"
+      className="mx-auto px-4 pb-14 sm:pb-20 container"
       aria-labelledby="contact-heading"
     >
       <ContactCard
@@ -150,7 +151,9 @@ export function ContactSection() {
           </Field>
 
           <Button type="submit" disabled={contactStatus === 'submitting'} className="w-full">
-            {contactStatus === 'submitting' ? 'Sending...' : 'Send Message'}
+            <AnimatedShinyText>
+              <span>{contactStatus === 'submitting' ? 'Sending...' : 'Send Message'}</span>
+            </AnimatedShinyText>
           </Button>
         </form>
       </ContactCard>

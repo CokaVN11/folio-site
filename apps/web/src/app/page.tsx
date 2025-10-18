@@ -1,102 +1,19 @@
-'use client';
-import { getJobs, getProject } from '@/lib/content';
 import Navbar from '@/components/Navbar';
-import { HeroSection } from '@/components/sections/HeroSection';
-import { EducationSection } from '@/components/sections/EducationSection';
-import { SkillsSection } from '@/components/sections/SkillsSection';
-import { ProjectsSection } from '@/components/sections/ProjectsSection';
-import { ExperienceSection } from '@/components/sections/ExperienceSection';
-import { ContactSection } from '@/components/sections/ContactSection';
+import {
+  HeroSection,
+  AboutSection,
+  EducationSection,
+  SkillsSection,
+  ProjectsSection,
+  ExperienceSection,
+  ContactSection,
+} from '@/components/sections';
 import { BlurFade } from '@/components/ui/blur-fade';
+import { RESUME, generatePersonSchema } from '@/data/resume';
 
 const BLUR_FADE_DELAY = 0.04;
-
-// Define a type for static projects
-interface StaticProject {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  contribution: string;
-}
-
-const staticProjects: StaticProject[] = [
-  {
-    id: 1,
-    title: 'E-Commerce Platform',
-    description:
-      'Full-stack e-commerce solution with payment integration, inventory management, and admin dashboard.',
-    tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-    contribution: 'Lead Developer',
-  },
-  {
-    id: 2,
-    title: 'Real-Time Analytics Dashboard',
-    description:
-      'Data visualization platform processing millions of events daily with real-time updates.',
-    tags: ['Next.js', 'AWS Lambda', 'DynamoDB', 'WebSocket'],
-    contribution: 'Backend & Infrastructure',
-  },
-  {
-    id: 3,
-    title: 'Portfolio Website',
-    description:
-      'Modern portfolio website with serverless contact form and Infrastructure as Code deployment.',
-    tags: ['Next.js', 'Lambda', 'Terraform', 'CI/CD'],
-    contribution: 'Solo Project',
-  },
-];
-
 export default async function Home() {
-  // Fetch dynamic data
-  const [jobs, projects] = await Promise.all([[], []]);
-
-  const personSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Khanh Nguyen',
-    url: 'https://portfolio.coka.id.vn',
-    jobTitle: 'Full-Stack Developer',
-    description:
-      'Full-stack developer specializing in modern web applications with React, Next.js, Vue.js, and scalable backend systems',
-    email: 'nguyenckhanh71@gmail.com',
-    telephone: '+84868750030',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Ho Chi Minh City',
-      addressCountry: 'Vietnam',
-    },
-    alumniOf: {
-      '@type': 'EducationalOrganization',
-      name: 'University of Science, VNUHCM (HCMUS)',
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: 'Ho Chi Minh City',
-        addressCountry: 'Vietnam',
-      },
-    },
-    knowsAbout: [
-      'React',
-      'Next.js',
-      'Vue.js',
-      'TypeScript',
-      'TailwindCSS',
-      'NestJS',
-      'FastAPI',
-      'Golang',
-      'Python',
-      'Java',
-      'Docker',
-      'CI/CD',
-      'GitHub Actions',
-      'GitLab',
-      'DigitalOcean',
-      'PostgreSQL',
-      'MongoDB',
-    ],
-    sameAs: ['https://github.com/CokaVN11', 'https://linkedin.com/in/ngckhanh'],
-  };
-
+  const personSchema = generatePersonSchema(RESUME);
   return (
     <>
       <script
@@ -105,35 +22,42 @@ export default async function Home() {
           __html: JSON.stringify(personSchema),
         }}
       />
-      <main className="bg-background mx-auto py-6 sm:py-8 lg:py-10 min-h-[100dvh] container">
+      <main className="space-y-10 bg-background mx-auto px-4 md:px-2 py-6 sm:py-8 lg:py-10 max-w-4xl min-h-[100dvh] container">
         {/* Hero Section */}
-        <HeroSection blurFadeDelay={BLUR_FADE_DELAY} />
-
-        {/* Education Section */}
-        <BlurFade delay={BLUR_FADE_DELAY * 3} inView={true} direction="down">
-          <EducationSection />
-        </BlurFade>
-
-        {/* Skills Section */}
-        <BlurFade delay={BLUR_FADE_DELAY * 5} inView={true} direction="down">
-          <SkillsSection />
-        </BlurFade>
+        <HeroSection
+          blurFadeDelay={BLUR_FADE_DELAY}
+          personalInfo={{
+            name: RESUME.name,
+            tagline: RESUME.tagline,
+            avatar: RESUME.avatar,
+          }}
+        />
+        <AboutSection blurFadeDelay={BLUR_FADE_DELAY} summary={RESUME.summary} />
 
         {/* Projects Section */}
-        <BlurFade delay={BLUR_FADE_DELAY * 6} inView={true} direction="down">
-          <ProjectsSection projects={projects.length > 0 ? projects : staticProjects} />
+        <BlurFade delay={BLUR_FADE_DELAY * 7} inView={true} direction="down">
+          <ProjectsSection projects={RESUME.projects} />
         </BlurFade>
 
         {/* Experience Section */}
-        <BlurFade delay={BLUR_FADE_DELAY * 7} inView={true} direction="down">
-          <ExperienceSection jobs={jobs} />
+        <BlurFade delay={BLUR_FADE_DELAY * 8} inView={true} direction="down">
+          <ExperienceSection work={RESUME.work} />
+        </BlurFade>
+
+        {/* Education Section */}
+        <BlurFade delay={BLUR_FADE_DELAY * 5} inView={true} direction="down">
+          <EducationSection education={RESUME.education} />
+        </BlurFade>
+
+        {/* Skills Section */}
+        <BlurFade delay={BLUR_FADE_DELAY * 6} inView={true} direction="down">
+          <SkillsSection blurFadeDelay={BLUR_FADE_DELAY * 6} skills={RESUME.skills} />
         </BlurFade>
 
         <BlurFade delay={BLUR_FADE_DELAY * 16} inView={true} direction="up">
           {/* Contact Section */}
           <ContactSection />
         </BlurFade>
-
         {/* Dock Navigation */}
         <Navbar />
       </main>

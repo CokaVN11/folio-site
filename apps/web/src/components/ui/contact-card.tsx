@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { LucideIcon, PlusIcon } from 'lucide-react';
+import { Highlighter } from './highlighter';
 
 type ContactInfoProps = React.ComponentProps<'div'> & {
   icon: LucideIcon;
@@ -38,12 +39,12 @@ export function ContactCard({
       <PlusIcon className="-bottom-3 -left-3 absolute w-6 h-6 text-muted-foreground/30" />
       <PlusIcon className="-right-3 -bottom-3 absolute w-6 h-6 text-muted-foreground/30" />
       <div className="flex flex-col justify-between lg:col-span-2">
-        <div className="relative space-y-4 md:p-8 px-4 py-8 h-full">
+        <div className="relative space-y-4 md:p-8 px-4 py-6 sm:py-8 h-full">
           <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl">{title}</h1>
           <p className="max-w-xl text-muted-foreground text-sm md:text-base lg:text-lg">
             {description}
           </p>
-          <div className="gap-4 grid md:grid md:grid-cols-2">
+          <div className="gap-2 sm:gap-4 grid md:grid md:grid-cols-2">
             {contactInfo?.map((info, index) => (
               <ContactInfo key={index} {...info} />
             ))}
@@ -70,7 +71,15 @@ function ContactInfo({ icon: Icon, label, value, className, ...props }: ContactI
       </div>
       <div>
         <p className="font-medium">{label}</p>
-        <p className="text-muted-foreground text-xs">{value}</p>
+        <p className="text-muted-foreground text-xs">
+          {label === 'Email' ? (
+            <Highlighter action="underline" color="#FF9800">
+              {value}
+            </Highlighter>
+          ) : (
+            value
+          )}
+        </p>
       </div>
     </div>
   );

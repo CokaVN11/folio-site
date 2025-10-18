@@ -1,70 +1,140 @@
-import type { Entry } from '@/lib/types';
+'use client';
 
-interface StaticProject {
-  id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  contribution: string;
-}
+import type { ProjectData } from '@/data/generateProjects';
 
 interface ProjectsSectionProps {
-  projects: Entry[] | StaticProject[];
+  projects: ProjectData[];
 }
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
-    <section
-      id="projects"
-      className="mx-auto px-4 py-16 container"
-      aria-labelledby="projects-heading"
-    >
+    <section id="projects" className="mx-auto container" aria-labelledby="projects-heading">
       <h2 id="projects-heading" className="mb-8 font-bold text-3xl">
         Featured Projects
       </h2>
-      <p className="mb-12 text-muted-foreground text-xl max-w-4xl">
+      <p className="mb-12 max-w-4xl text-muted-foreground text-xl">
         A selection of projects I&apos;ve worked on, demonstrating technical skills and delivery
         discipline.
       </p>
 
-      <div className="gap-8 grid max-w-4xl">
-        {projects.map((project) => {
-          // Check if it's a static project or Entry
-          const isStaticProject = 'id' in project;
-          const title = isStaticProject ? project.title : project.metadata.title;
-          const description = isStaticProject ? project.description : project.metadata.summary;
-          const tags = isStaticProject ? project.tags : project.metadata.tech || [];
-          const contribution = isStaticProject
-            ? project.contribution
-            : project.metadata.role || 'Contributor';
-          const key = isStaticProject ? project.id : project.slug;
-
-          return (
+      {projects.length > 0 ? (
+        <div className="gap-8 grid max-w-4xl">
+          {projects.map((project) => (
             <article
-              key={key}
-              className="p-6 border hover:border-primary border-border rounded-lg transition-colors"
+              key={project.title}
+              className="group hover:shadow-md p-6 border hover:border-primary border-border rounded-lg transition-all duration-300"
             >
-              <h3 className="mb-3 font-semibold text-2xl">{title}</h3>
-              <p className="mb-4 text-muted-foreground">{description}</p>
+              {/* Project Header with Cover Image */}
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    {project.cover && (
+                      <img
+                        src={project.cover}
+                        alt={`${project.title} cover`}
+                        className="rounded-md w-12 h-12 object-cover"
+                      />
+                    )}
+                    <h3 className="font-semibold group-hover:text-primary text-2xl transition-colors">
+                      {project.title}
+                    </h3>
+                  </div>
 
+                  {/* Project Date */}
+                  {project.date && (
+                    <p className="mb-2 text-muted-foreground text-sm">
+                      {new Date(project.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                      })}
+                    </p>
+                  )}
+                </div>
+
+                {project.featured && (
+                  <span className="bg-primary/10 px-2 py-1 rounded font-medium text-primary text-xs">
+                    Featured
+                  </span>
+                )}
+              </div>
+
+              {/* Project Description */}
+              <p className="mb-4 text-muted-foreground">{project.description}</p>
+
+              {/* Tags */}
+              {project.tags && project.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="bg-muted px-2 py-1 rounded font-medium text-muted-foreground text-xs"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Technologies */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {tags.map((tag: string) => (
+                {project.technologies.map((tech) => (
                   <span
-                    key={tag}
+                    key={tech}
                     className="bg-secondary px-3 py-1 rounded-md text-secondary-foreground text-sm"
                   >
-                    {tag}
+                    {tech}
                   </span>
                 ))}
               </div>
 
-              <p className="text-muted-foreground text-sm">
-                <span className="font-semibold">My Role:</span> {contribution}
-              </p>
+              {/* Role and Links */}
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  {/* Project Role/Contribution */}
+                  {project.contribution && (
+                    <p className="mb-2 text-muted-foreground text-sm">
+                      <span className="font-semibold">Role:</span> {project.contribution}
+                    </p>
+                  )}
+
+                  {/* Project Summary if available */}
+                  {project.summary && project.summary !== project.description && (
+                    <p className="text-muted-foreground text-sm">{project.summary}</p>
+                  )}
+                </div>
+
+                {/* Project Links */}
+                <div className="flex gap-3 ml-4">
+                  {project.href && (
+                    <a
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-primary hover:text-primary/80 text-sm whitespace-nowrap transition-colors"
+                    >
+                      Live Demo →
+                    </a>
+                  )}
+                  {project.slug && (
+                    <a
+                      href={project.href || `/project/${project.slug}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-primary hover:text-primary/80 text-sm whitespace-nowrap transition-colors"
+                    >
+                      Details →
+                    </a>
+                  )}
+                </div>
+              </div>
             </article>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="py-12 text-center">
+          <p className="mb-4 text-muted-foreground">Projects will appear here once added.</p>
+        </div>
+      )}
     </section>
   );
 }

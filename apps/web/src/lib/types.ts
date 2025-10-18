@@ -8,6 +8,8 @@ export type Meta = {
   tech?: string[];
   featured?: boolean;
   draft?: boolean;
+  location?: string;
+  type?: string;
 };
 
 export type Entry = {
