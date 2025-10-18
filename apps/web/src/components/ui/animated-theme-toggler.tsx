@@ -10,11 +10,13 @@ import { Button } from './button';
 
 interface AnimatedThemeTogglerProps extends React.ComponentPropsWithoutRef<'button'> {
   duration?: number;
+  label?: boolean;
 }
 
 export const AnimatedThemeToggler = ({
   className,
   duration = 400,
+  label = false,
   ...props
 }: AnimatedThemeTogglerProps) => {
   const { theme, setTheme, systemTheme } = useTheme();
@@ -80,7 +82,7 @@ export const AnimatedThemeToggler = ({
       {...props}
     >
       {theme === 'dark' ? <Sun /> : <Moon />}
-      <span className="sr-only">Toggle theme</span>
+      <span className={!label ? 'sr-only' : ''}>Toggle theme</span>
     </Button>
   );
 };

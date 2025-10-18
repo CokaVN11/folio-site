@@ -7,6 +7,9 @@ import { SkillsSection } from '@/components/sections/SkillsSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { ExperienceSection } from '@/components/sections/ExperienceSection';
 import { ContactSection } from '@/components/sections/ContactSection';
+import { BlurFade } from '@/components/ui/blur-fade';
+
+const BLUR_FADE_DELAY = 0.04;
 
 // Define a type for static projects
 interface StaticProject {
@@ -102,32 +105,34 @@ export default async function Home() {
           __html: JSON.stringify(personSchema),
         }}
       />
-      <main className="bg-background min-h-screen">
+      <main className="bg-background mx-auto py-6 sm:py-8 lg:py-10 min-h-[100dvh] container">
         {/* Hero Section */}
-        <HeroSection
-          onContactClick={(e) => {
-            e.preventDefault();
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }}
-        />
+        <HeroSection blurFadeDelay={BLUR_FADE_DELAY} />
 
         {/* Education Section */}
-        <EducationSection />
+        <BlurFade delay={BLUR_FADE_DELAY * 3} inView={true} direction="down">
+          <EducationSection />
+        </BlurFade>
 
         {/* Skills Section */}
-        <SkillsSection />
+        <BlurFade delay={BLUR_FADE_DELAY * 5} inView={true} direction="down">
+          <SkillsSection />
+        </BlurFade>
 
         {/* Projects Section */}
-        <ProjectsSection projects={projects.length > 0 ? projects : staticProjects} />
+        <BlurFade delay={BLUR_FADE_DELAY * 6} inView={true} direction="down">
+          <ProjectsSection projects={projects.length > 0 ? projects : staticProjects} />
+        </BlurFade>
 
         {/* Experience Section */}
-        <ExperienceSection jobs={jobs} />
+        <BlurFade delay={BLUR_FADE_DELAY * 7} inView={true} direction="down">
+          <ExperienceSection jobs={jobs} />
+        </BlurFade>
 
-        {/* Contact Section */}
-        <ContactSection />
+        <BlurFade delay={BLUR_FADE_DELAY * 16} inView={true} direction="up">
+          {/* Contact Section */}
+          <ContactSection />
+        </BlurFade>
 
         {/* Dock Navigation */}
         <Navbar />

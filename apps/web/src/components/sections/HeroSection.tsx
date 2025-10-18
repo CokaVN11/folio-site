@@ -1,51 +1,38 @@
 'use client';
 
 import Link from 'next/link';
+import BlurFadeText from '../ui/blur-fade-text';
+import { BlurFade } from '../ui/blur-fade';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 interface HeroSectionProps {
-  onContactClick: (e: React.MouseEvent) => void;
+  blurFadeDelay: number;
 }
 
-export function HeroSection({ onContactClick }: HeroSectionProps) {
+export function HeroSection({ blurFadeDelay }: HeroSectionProps) {
   return (
-    <header className="mx-auto px-4 py-20 container">
-      <div className="max-w-4xl">
-        <h1 className="mb-6 font-bold text-3xl sm:text-4xl md:text-5xl">
-          Hi, I&apos;m <span className="text-primary">Khanh Nguyen</span>
-        </h1>
-        <p className="mb-4 text-muted-foreground text-xl">
-          Full-stack developer specializing in modern web applications with React, Next.js, Vue.js,
-          and scalable backend systems.
-        </p>
-        <div className="mb-6 text-muted-foreground text-lg sm:text-left text-center">
-          <div className="flex sm:flex-row flex-col gap-1 sm:gap-4">
-            <span>📍 Ho Chi Minh City, Vietnam</span>
-            <span>📧 nguyenckhanh71@gmail.com</span>
-            <span>📱 (+84)868 750 030</span>
-          </div>
+    <div className="space-y-6 sm:space-y-8 mx-auto px-4 w-full container">
+      <div className="flex sm:flex-row flex-col justify-between items-center gap-4 sm:gap-6">
+        <div className="flex flex-col flex-1 space-y-2 sm:space-y-1.5 sm:text-left text-center">
+          <BlurFadeText
+            delay={blurFadeDelay}
+            className="font-bold text-2xl sm:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl leading-tight tracking-tighter"
+            yOffset={8}
+            text={`Hi, I'm Khanh Nguyen 🥤`}
+          />
+          <BlurFadeText
+            delay={blurFadeDelay + 0.05}
+            className="max-w-none sm:max-w-md lg:max-w-lg xl:max-w-xl text-sm sm:text-base lg:text-lg"
+            text={`I'm a full stack developer, learning new things everyday to build better products.`}
+          />
         </div>
-        <div className="flex sm:flex-row flex-col gap-4">
-          <a
-            href="#contact"
-            onClick={onContactClick}
-            className="bg-primary hover:opacity-90 px-6 py-3 rounded-md text-primary-foreground transition-opacity"
-          >
-            Get in Touch
-          </a>
-          <Link
-            href="#projects"
-            className="hover:bg-accent px-6 py-3 border border-border rounded-md transition-colors"
-          >
-            View Projects
-          </Link>
-          <Link
-            href="#experience"
-            className="hover:bg-accent px-6 py-3 border border-border rounded-md transition-colors"
-          >
-            View Experience
-          </Link>
-        </div>
+        <BlurFade delay={blurFadeDelay + 0.1}>
+          <Avatar className="border size-20 sm:size-24 lg:size-28 xl:size-32">
+            <AvatarImage alt="Khanh Nguyen" src="/avatar.jpg" className="object-cover" />
+            <AvatarFallback>KN</AvatarFallback>
+          </Avatar>
+        </BlurFade>
       </div>
-    </header>
+    </div>
   );
 }
