@@ -10,11 +10,11 @@ terraform {
 
   # Remote state management
   backend "s3" {
-    bucket         = "folio-terraform-state-ap-southeast-1"
-    key            = "folio-site/terraform.tfstate"
-    region         = "ap-southeast-1"
-    use_lockfile   = true
-    encrypt        = true
+    bucket       = "folio-terraform-state-ap-southeast-1"
+    key          = "folio-site/terraform.tfstate"
+    region       = "ap-southeast-1"
+    use_lockfile = true
+    encrypt      = true
   }
 }
 

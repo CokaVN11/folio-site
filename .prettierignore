@@ -10,3 +10,4 @@ coverage/
 pnpm-lock.yaml
 *.zip
 *.md
+*.tf

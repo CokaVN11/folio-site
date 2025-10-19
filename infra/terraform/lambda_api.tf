@@ -88,7 +88,7 @@ resource "aws_lambda_function" "contact" {
 
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.contact_messages.name
+      TABLE_NAME     = aws_dynamodb_table.contact_messages.name
       ALLOWED_ORIGIN = var.site_origin != "" ? var.site_origin : "*"
     }
   }

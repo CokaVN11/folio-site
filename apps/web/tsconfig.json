@@ -2,11 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "jsx": "preserve",
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -20,12 +16,8 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@services/*": [
-        "../services/lambda/src/*"
-      ]
+      "@/*": ["./src/*"],
+      "@services/*": ["../services/lambda/src/*"]
     },
     "plugins": [
       {
@@ -33,14 +25,6 @@
       }
     ]
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "../services/**/*.ts",
-    ".next/types/**/*.ts",
-    "next-env.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "../services/**/*.ts", ".next/types/**/*.ts", "next-env.d.ts"],
+  "exclude": ["node_modules"]
 }
