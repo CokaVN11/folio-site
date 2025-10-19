@@ -29,7 +29,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
 
       {projects.length > 0 ? (
         <div className="justify-center sm:justify-normal gap-6 grid grid-cols-1 sm:grid-cols-2">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <ProjectCard
               key={project.title}
               title={project.title}
@@ -44,6 +44,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
               })}`}
               tags={project.tags}
               image={project.cover}
+              isPriority={index === 0} // First project card gets priority
             />
           ))}
         </div>

@@ -19,6 +19,7 @@ interface Props {
     href: string;
   }[];
   className?: string;
+  isPriority?: boolean; // Add prop to identify first project card
 }
 
 export function ProjectCard({
@@ -32,6 +33,7 @@ export function ProjectCard({
   video,
   links,
   className,
+  isPriority = false, // Default to false
 }: Props) {
   return (
     <Link href={href || '#'} className={cn('block cursor-pointer', className)}>
@@ -54,9 +56,15 @@ export function ProjectCard({
           <Image
             src={image}
             alt={title}
-            width={500}
-            height={300}
+            width={400}
+            height={240}
             className="rounded-t-lg w-full h-40 object-cover object-top overflow-hidden"
+            priority={isPriority}
+            loading={isPriority ? 'eager' : 'lazy'}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            style={{
+              viewTransitionName: isPriority ? 'project-image' : undefined
+            }}
           />
         )}
 

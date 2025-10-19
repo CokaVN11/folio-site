@@ -69,7 +69,7 @@ export const RESUME = {
       school: 'University of Science, VNUHCM (HCMUS)',
       href: 'https://hcmus.edu.vn',
       degree: "Bachelor's Degree of Information Technology",
-      logoUrl: 'https://en.hcmus.edu.vn/wp-content/uploads/2022/07/Logo-01.png', // Remote option
+      logoUrl: '/images/logo/hcmus.png',
       startDate: '2021',
       endDate: '2025',
     },

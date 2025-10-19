@@ -85,6 +85,7 @@ export const ResumeCard = ({
                 onError={() => setImageError(true)}
                 sizes="(max-width: 768px) 48px, 64px"
                 priority={false}
+                loading="lazy"
               />
             ) : (
               <AvatarFallback className="bg-muted dark:bg-muted/50 rounded-full size-12 sm:size-16">
