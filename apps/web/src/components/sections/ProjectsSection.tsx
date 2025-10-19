@@ -18,9 +18,11 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
     >
       <div className="flex flex-col justify-center items-center gap-2 mb-8 text-center">
         <Badge className="mx-auto max-w-fit">Featured Projects</Badge>
-        <SparklesText className="font-bold text-2xl sm:text-3xl md:text-5xl tracking-tighter">
-          Check out my latest work
-        </SparklesText>
+        <h2 id="projects-heading">
+          <SparklesText className="font-bold text-2xl sm:text-3xl md:text-5xl tracking-tighter">
+            Check out my latest work
+          </SparklesText>
+        </h2>
         <p className="text-muted-foreground lg:text-base/relaxed md:text-xl/relaxed xl:text-xl/relaxed">
           I&apos;ve worked on a variety of projects, from simple websites to complex web
           applications. Here are a few of my favorites.

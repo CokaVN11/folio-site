@@ -11,7 +11,7 @@ export function AboutSection({ blurFadeDelay, summary }: AboutSectionProps) {
     <section id="about" className="mx-auto w-full container" aria-labelledby="about-heading">
       <div className="mx-auto">
         <BlurFade delay={blurFadeDelay * 3}>
-          <div>
+          <h2 id="about-heading">
             <AnimatedGradientText
               speed={1}
               colorFrom="#0070F3"
@@ -20,7 +20,7 @@ export function AboutSection({ blurFadeDelay, summary }: AboutSectionProps) {
             >
               About Me
             </AnimatedGradientText>
-          </div>
+          </h2>
         </BlurFade>
 
         <BlurFade delay={blurFadeDelay * 4}>

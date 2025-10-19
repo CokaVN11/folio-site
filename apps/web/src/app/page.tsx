@@ -9,18 +9,27 @@ import {
   ContactSection,
 } from '@/components/sections';
 import { BlurFade } from '@/components/ui/blur-fade';
-import { RESUME, generatePersonSchema } from '@/data/resume';
+import { RESUME, generatePersonSchema, generateProfessionalServiceSchema } from '@/data/resume';
 import { Separator } from '@radix-ui/react-separator';
 
 const BLUR_FADE_DELAY = 0.04;
+
 export default async function Home() {
   const personSchema = generatePersonSchema(RESUME);
+  const professionalServiceSchema = generateProfessionalServiceSchema(RESUME);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(personSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(professionalServiceSchema),
         }}
       />
       <main className="space-y-10 bg-background mx-auto px-4 md:px-2 py-6 sm:py-8 lg:py-10 max-w-2xl min-h-[100dvh] container">

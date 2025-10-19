@@ -187,14 +187,16 @@ export function SkillsSection({
               delay: blurFadeDelay * 0.1,
             }}
           >
-            <AnimatedGradientText
-              speed={1}
-              colorFrom="#0070F3"
-              colorTo="#38bdf8"
-              className="font-bold text-3xl sm:text-4xl lg:text-5xl"
-            >
-              Technologies & Skills
-            </AnimatedGradientText>
+            <h2 id="skills-heading">
+              <AnimatedGradientText
+                speed={1}
+                colorFrom="#0070F3"
+                colorTo="#38bdf8"
+                className="font-bold text-3xl sm:text-4xl lg:text-5xl"
+              >
+                Technologies & Skills
+              </AnimatedGradientText>
+            </h2>
             <motion.p
               className="mx-auto max-w-xl text-gray-600 dark:text-gray-300 text-base"
               initial={{ opacity: 0 }}

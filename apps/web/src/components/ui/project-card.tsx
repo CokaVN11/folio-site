@@ -63,7 +63,7 @@ export function ProjectCard({
             loading={isPriority ? 'eager' : 'lazy'}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
             style={{
-              viewTransitionName: isPriority ? 'project-image' : undefined
+              viewTransitionName: isPriority ? 'project-image' : undefined,
             }}
           />
         )}

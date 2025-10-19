@@ -40,7 +40,9 @@ export function ContactCard({
       <PlusIcon className="-right-3 -bottom-3 absolute w-6 h-6 text-muted-foreground/30" />
       <div className="flex flex-col justify-between lg:col-span-2">
         <div className="relative space-y-4 md:p-8 px-4 py-6 sm:py-8 h-full">
-          <h1 className="font-bold text-3xl md:text-4xl lg:text-5xl">{title}</h1>
+          <h2 id="contact-heading" className="font-bold text-3xl md:text-4xl lg:text-5xl">
+            {title}
+          </h2>
           <p className="max-w-xl text-muted-foreground text-sm md:text-base lg:text-lg">
             {description}
           </p>

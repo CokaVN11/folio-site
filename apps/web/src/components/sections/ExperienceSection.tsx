@@ -14,9 +14,11 @@ export function ExperienceSection({ work }: ExperienceSectionProps) {
     <section id="experience" className="mx-auto w-full" aria-labelledby="experience-heading">
       <div className="flex flex-col justify-center items-center gap-2 mb-8 text-center">
         <Badge className="mx-auto max-w-fit">Experience</Badge>
-        <SparklesText className="font-bold text-2xl sm:text-3xl md:text-5xl tracking-tighter">
-          Career Journey
-        </SparklesText>
+        <h2 id="experience-heading">
+          <SparklesText className="font-bold text-2xl sm:text-3xl md:text-5xl tracking-tighter">
+            Career Journey
+          </SparklesText>
+        </h2>
         <p className="text-muted-foreground lg:text-base/relaxed md:text-xl/relaxed xl:text-xl/relaxed">
           Through roles at several companies, I&apos;ve gradually grown my understanding of software
           engineering.

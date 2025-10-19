@@ -16,14 +16,16 @@ export function EducationSection({ education }: EducationSectionProps) {
         <div className="flex flex-col gap-y-4 sm:gap-y-6 min-h-0">
           <BlurFade delay={0.1} inView>
             <div className="text-center">
-              <AnimatedGradientText
-                speed={1}
-                colorFrom="#0070F3"
-                colorTo="#38bdf8"
-                className="font-bold text-3xl sm:text-4xl lg:text-5xl"
-              >
-                Education
-              </AnimatedGradientText>
+              <h2 id="education-heading">
+                <AnimatedGradientText
+                  speed={1}
+                  colorFrom="#0070F3"
+                  colorTo="#38bdf8"
+                  className="font-bold text-3xl sm:text-4xl lg:text-5xl"
+                >
+                  Education
+                </AnimatedGradientText>
+              </h2>
             </div>
           </BlurFade>
 

@@ -25,13 +25,32 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${entry.metadata.title} - Projects`,
-    description: entry.metadata.summary,
+    title: `${entry.metadata.title} - Full-Stack Project | Khanh Nguyen Portfolio`,
+    description:
+      entry.metadata.summary ||
+      `Full-stack development project: ${entry.metadata.title}. Built with ${entry.metadata.tech?.join(', ') || 'modern web technologies'}. Professional web development case study.`,
+    keywords: [
+      entry.metadata.title,
+      ...(entry.metadata.tech || []),
+      ...(entry.metadata.tags || []),
+      'full-stack project',
+      'web development',
+      'case study',
+      'portfolio project',
+      'professional development',
+      ...(entry.metadata.tech?.includes('React') ? ['React project'] : []),
+      ...(entry.metadata.tech?.includes('Next.js') ? ['Next.js project'] : []),
+      ...(entry.metadata.tech?.includes('Vue.js') ? ['Vue.js project'] : []),
+      ...(entry.metadata.tech?.includes('NestJS') ? ['NestJS project'] : []),
+      ...(entry.metadata.tech?.includes('TypeScript') ? ['TypeScript project'] : []),
+    ].filter(Boolean),
     openGraph: {
       title: entry.metadata.title,
-      description: entry.metadata.summary,
+      description:
+        entry.metadata.summary || `Full-stack development project: ${entry.metadata.title}`,
       images: entry.metadata.cover ? [{ url: entry.metadata.cover }] : [],
       type: 'article',
+      url: `https://portfolio.coka.id.vn/project/${entry.slug}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -56,11 +75,45 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
     datePublished: entry.metadata.date,
     image: entry.metadata.cover,
     keywords: entry.metadata.tags?.join(', '),
+    genre: 'Web Development',
     author: {
+      '@type': 'Person',
+      name: 'Khanh Nguyen',
+      jobTitle: 'Full-Stack Developer',
+      url: 'https://portfolio.coka.id.vn',
+      sameAs: ['https://github.com/CokaVN11', 'https://linkedin.com/in/ngckhanh'],
+    },
+    creator: {
+      '@type': 'Person',
+      name: 'Khanh Nguyen',
+    },
+    publisher: {
       '@type': 'Person',
       name: 'Khanh Nguyen',
     },
     url: `https://portfolio.coka.id.vn/project/${entry.slug}`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://portfolio.coka.id.vn/project/${entry.slug}`,
+    },
+    programmingLanguage: entry.metadata.tech,
+    about: entry.metadata.tags?.map((tag) => ({
+      '@type': 'Thing',
+      name: tag,
+    })),
+    offers: {
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: 'Full-Stack Web Development',
+        description: `Custom web development using ${entry.metadata.tech?.join(', ') || 'modern technologies'}`,
+      },
+      seller: {
+        '@type': 'Person',
+        name: 'Khanh Nguyen',
+        jobTitle: 'Full-Stack Developer',
+      },
+    },
   };
 
   return (

@@ -112,3 +112,80 @@ export const generatePersonSchema = (data: typeof RESUME) => {
     sameAs: [data.contact.social.GitHub.url, data.contact.social.LinkedIn.url],
   };
 };
+
+/**
+ * Generate Schema.org structured data for Professional Service
+ */
+export const generateProfessionalServiceSchema = (data: typeof RESUME) => {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    name: `${data.name} - Full-Stack Web Development Services`,
+    description:
+      'Professional full-stack web development services including React, Next.js, Vue.js, NestJS, API development, and scalable web applications',
+    url: data.url,
+    email: data.email,
+    telephone: data.telephone,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: data.location.includes(',')
+        ? data.location.split(',')[0].trim()
+        : data.location,
+      addressCountry: 'Vietnam',
+    },
+    areaServed: [
+      {
+        '@type': 'Country',
+        name: 'Vietnam',
+      },
+      {
+        '@type': 'Country',
+        name: 'Remote',
+      },
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Web Development Services',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Frontend Development',
+            description: 'React, Next.js, Vue.js, TypeScript, TailwindCSS development',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Backend Development',
+            description: 'NestJS, Golang, Python, API development, database design',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Full-Stack Development',
+            description: 'End-to-end web application development',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'DevOps & Deployment',
+            description: 'Docker, CI/CD, AWS, serverless architecture',
+          },
+        },
+      ],
+    },
+    provider: {
+      '@type': 'Person',
+      name: data.name,
+      jobTitle: data.title,
+      knowsAbout: data.skills,
+    },
+  };
+};

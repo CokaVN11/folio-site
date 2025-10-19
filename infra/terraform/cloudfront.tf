@@ -45,6 +45,18 @@ resource "aws_cloudfront_distribution" "site" {
     default_ttl            = 300  # 5 minutes - short TTL for HTML/JSON
     max_ttl                = 3600 # 1 hour
     compress               = true
+
+    # Add URL canonicalization function at viewer request
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_canonicalization.arn
+    }
+
+    # Add compression headers at viewer response
+    function_association {
+      event_type   = "viewer-response"
+      function_arn = aws_cloudfront_function.compression_headers.arn
+    }
   }
 
   # Cache behavior for content assets - Primary S3 Website Origin
@@ -106,4 +118,74 @@ resource "aws_cloudfront_distribution" "site" {
   tags = {
     Name = "${var.project_name}-cloudfront"
   }
+}
+
+# CloudFront Function for URL canonicalization
+resource "aws_cloudfront_function" "url_canonicalization" {
+  name    = "${var.project_name}-url-canonicalization-${var.environment}"
+  runtime = "cloudfront-js-1.0"
+  code    = <<-EOT
+    function handler(event) {
+        var request = event.request;
+        var headers = request.headers;
+        var host = headers.host ? headers.host.value : '';
+        var uri = request.uri;
+
+        // Redirect www to non-www (example.com preference)
+        if (host.startsWith('www.')) {
+            var newHost = host.substring(4); // Remove 'www.'
+            var redirectUrl = 'https://' + newHost + uri;
+
+            return {
+                statusCode: 301,
+                statusDescription: 'Moved Permanently',
+                headers: {
+                    'location': {
+                        value: redirectUrl
+                    },
+                    'cache-control': {
+                        value: 'public, max-age=3600'
+                    }
+                }
+            };
+        }
+
+        return request;
+    }
+  EOT
+
+  publish = true
+}
+
+# CloudFront Function for compression headers
+resource "aws_cloudfront_function" "compression_headers" {
+  name    = "${var.project_name}-compression-headers-${var.environment}"
+  runtime = "cloudfront-js-1.0"
+  code    = <<-EOT
+    function handler(event) {
+        var response = event.response;
+        var headers = response.headers;
+
+        // Add compression headers to indicate supported compression
+        headers['vary'] = {
+            value: 'Accept-Encoding'
+        };
+
+        // Add cache-control header for better compression caching
+        if (event.request.uri.match(/\.(html|css|js|json|xml|txt|svg|webmanifest)$/)) {
+            headers['cache-control'] = {
+                value: 'public, max-age=0, must-revalidate'
+            };
+        }
+
+        // Add debugging header
+        headers['x-compression-enabled'] = {
+            value: 'true'
+        };
+
+        return response;
+    }
+  EOT
+
+  publish = true
 }
