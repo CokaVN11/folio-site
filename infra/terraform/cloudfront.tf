@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "site" {
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = "S3-Website-${aws_s3_bucket.site.id}"
-    cache_policy_id        = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingOptimized
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 300  # 5 minutes - short TTL for HTML/JSON
@@ -53,7 +53,7 @@ resource "aws_cloudfront_distribution" "site" {
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = "S3-Website-${aws_s3_bucket.site.id}"
-    cache_policy_id        = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingOptimized
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 86400    # 1 day - long TTL for immutable assets
     default_ttl            = 604800   # 7 days
@@ -67,7 +67,7 @@ resource "aws_cloudfront_distribution" "site" {
     allowed_methods        = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods         = ["GET", "HEAD"]
     target_origin_id       = "S3-OAC-${aws_s3_bucket.site.id}"
-    cache_policy_id        = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" # Managed-CachingOptimized
+    cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6" # Managed-CachingOptimized
     viewer_protocol_policy = "redirect-to-https"
     min_ttl                = 0
     default_ttl            = 0   # No caching for API
