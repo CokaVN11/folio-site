@@ -1,0 +1,240 @@
+---
+title: 'Software Engineer Intern - Grab'
+date: '2024-12-31'
+summary: 'Developed frontend modules in Vue.js and contributed to NestJS microservices, enhancing automation features for an internal low-code platform that improved operational tracking and reduced manual processes.'
+tags: ['FinTech', 'Superapp', 'Vue.js', 'NestJS', 'Microservices', 'Low-Code', 'Automation']
+cover: '/images/jobs/grab.png'
+role: 'Software Engineer Intern'
+tech: ['Vue.js', 'TypeScript', 'NestJS', 'Node.js', 'PostgreSQL', 'Docker', 'REST APIs', 'Agile']
+featured: true
+draft: false
+---
+
+# Software Engineer Intern - Grab
+
+## Company Overview
+
+**Grab** is Southeast Asia's leading superapp, offering ride-hailing, food delivery, digital payments, and financial services to millions of users across the region. Working at Grab's Ho Chi Minh City office, I was part of the internal tools team that builds enterprise-scale platforms to support Grab's massive operational infrastructure.
+
+## 🏢 Role & Responsibilities
+
+As a Software Engineer Intern on the **Internal Automation Platform** team, I worked in a distributed Agile environment with colleagues across Vietnam, Singapore, and other Southeast Asian offices. My role spanned the full development lifecycle, from requirements gathering to deployment and monitoring.
+
+**Key Responsibilities:**
+- Frontend module development using Vue.js 3 with TypeScript
+- Backend microservice contributions using NestJS framework
+- API design and implementation for platform features
+- Code review participation and quality assurance
+- Cross-timezone collaboration with international team members
+
+## 🔧 Technical Implementation Details
+
+### Frontend Architecture with Vue.js
+
+I developed several key frontend modules for the low-code automation platform using modern Vue.js patterns:
+
+```typescript
+// Component architecture with Composition API
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+export default defineComponent({
+  name: 'WorkflowBuilder',
+  setup() {
+    const workflowState = ref<WorkflowState>({
+      nodes: [],
+      connections: [],
+      isRunning: false
+    })
+
+    // Reactive state management for complex workflows
+    const availableActions = computed(() =>
+      filterActionsByPermission(workflowState.value.currentRole)
+    )
+
+    return { workflowState, availableActions }
+  }
+})
+```
+
+**Technical Challenges Solved:**
+- Implemented reactive state management for complex workflow visualizations
+- Created reusable component library for consistent UI patterns
+- Optimized rendering performance for large-scale workflow diagrams
+- Integrated real-time validation and error handling
+
+### Backend Microservices with NestJS
+
+Contributed to several NestJS microservices that power the automation platform:
+
+```typescript
+// NestJS service with dependency injection
+@Injectable()
+export class WorkflowExecutionService {
+  constructor(
+    private readonly workflowRepository: WorkflowRepository,
+    private readonly notificationService: NotificationService,
+    private readonly auditLogger: AuditLogger
+  ) {}
+
+  @Cron('*/5 * * * *') // Every 5 minutes
+  async processScheduledWorkflows() {
+    const pendingWorkflows = await this.workflowRepository
+      .findByStatus(WorkflowStatus.SCHEDULED)
+
+    await Promise.allSettled(
+      pendingWorkflows.map(workflow => this.executeWorkflow(workflow))
+    )
+  }
+}
+```
+
+**Microservice Contributions:**
+- Workflow execution engine with task scheduling
+- Real-time notification system for workflow status updates
+- Audit logging service for compliance and monitoring
+- API gateway integration for service communication
+
+## 🎨 Low-Code Platform Development
+
+The core project was enhancing Grab's internal low-code automation platform, enabling non-technical teams to automate complex operational processes.
+
+**Platform Features Developed:**
+
+1. **Visual Workflow Builder**
+   - Drag-and-drop interface for creating automation workflows
+   - Real-time collaboration and conflict resolution
+   - Template library for common operational processes
+
+2. **Business Logic Engine**
+   - Rule-based decision making system
+   - Conditional branching and loop constructs
+   - Integration with Grab's internal service ecosystem
+
+3. **Operational Dashboard**
+   - Real-time monitoring of workflow execution
+   - Performance analytics and bottleneck identification
+   - Error tracking and debugging tools
+
+## 🏆 Agile Development & International Collaboration
+
+### Distributed Team Workflow
+
+Working across multiple time zones (Vietnam, Singapore, Malaysia), I adapted to Grab's enterprise Agile practices:
+
+**Daily Ceremonies:**
+- Standup meetings rotating across time zones to accommodate all team members
+- Sprint planning with remote collaboration tools (Miro, Teams)
+- Retrospectives focusing on process improvement for distributed teams
+
+**Code Review Culture:**
+- Participated in 15+ code reviews per sprint
+- Provided constructive feedback on both frontend and backend code
+- Learned enterprise-level code quality standards and security practices
+
+### Cross-Cultural Communication
+
+- Collaborated with colleagues from 5+ different countries
+- Adapted communication styles for different cultural contexts
+- Developed skills in async communication and documentation
+
+## 🎯 Skills & Experience Gained
+
+### Technical Skills Enhanced
+
+**Frontend Development:**
+- Vue.js 3 Composition API and advanced patterns
+- TypeScript for type-safe large-scale applications
+- State management with Pinia in complex applications
+- Component library design and documentation
+
+**Backend Development:**
+- NestJS framework and microservices architecture
+- RESTful API design and OpenAPI documentation
+- Database design with PostgreSQL
+- Docker containerization and deployment strategies
+
+**System Design:**
+- Enterprise software architecture patterns
+- Scalability and performance optimization
+- Security best practices in FinTech applications
+- Monitoring and observability implementation
+
+### Professional Development
+
+**Software Engineering Practices:**
+- Test-driven development and automated testing
+- CI/CD pipeline understanding and deployment
+- Code quality metrics and static analysis
+- Technical documentation and knowledge sharing
+
+**Business Acumen:**
+- Understanding of superapp business models
+- Operational efficiency and process automation
+- Enterprise software requirements and constraints
+- FinTech industry regulations and compliance
+
+## 🌟 Learning & Professional Growth
+
+### Technical Growth
+
+This internship transformed my theoretical knowledge into practical, enterprise-scale development skills:
+
+**From Academic to Professional:**
+- Applied computer science concepts to real-world business problems
+- Learned industry-standard development practices and tooling
+- Understood the importance of maintainable, scalable code architecture
+- Gained experience with version control in large team environments
+
+**Problem-Solving Evolution:**
+- Developed systematic debugging approaches for complex systems
+- Learned to balance technical solutions with business requirements
+- Practiced incremental development and iterative improvement
+- Mastered the art of asking the right technical questions
+
+### Career Development
+
+**Industry Exposure:**
+- Gained insight into Southeast Asia's tech ecosystem
+- Understanding of superapp business models and challenges
+- Exposure to enterprise-scale software development lifecycle
+- Network with professionals across different roles and expertise levels
+
+**Soft Skills Enhancement:**
+- Cross-cultural communication in global teams
+- Time management and priority setting in fast-paced environment
+- Presentation skills and technical communication
+- Adaptability and resilience in dynamic work environments
+
+## 💡 Key Takeaways
+
+### Technical Achievements
+
+1. **Full-Stack Impact**: Successfully contributed to both frontend (Vue.js) and backend (NestJS) development, demonstrating versatility and comprehensive understanding of web application architecture.
+
+2. **Enterprise-Scale Development**: Built features that serve Grab's internal operations at massive scale, understanding performance, security, and reliability requirements.
+
+3. **Modern Technology Stack**: Gained proficiency in cutting-edge technologies (Vue.js 3, NestJS, TypeScript) that are highly relevant in today's job market.
+
+### Business Impact
+
+1. **Operational Efficiency**: Contributed to automation platform that reduced manual processes and improved operational tracking across Grab's business units.
+
+2. **Cross-Functional Collaboration**: Worked effectively with product managers, designers, and other engineers to deliver features that met both technical and business requirements.
+
+3. **International Experience**: Successfully navigated cross-timezone collaboration, developing skills essential for global software development.
+
+### Professional Growth
+
+1. **Industry Readiness**: Transitioned from academic projects to professional software development, understanding industry standards and expectations.
+
+2. **Continuous Learning**: Embraced feedback and learning opportunities, rapidly adapting to new technologies and development practices.
+
+3. **Career Foundation**: Built a strong foundation for a career in software engineering with experience at a major technology company.
+
+---
+
+**`★ Insight ─────────────────────────────────────`**
+This Grab internship represents a significant milestone in transitioning from academic learning to professional software engineering. The experience demonstrates full-stack capabilities at enterprise scale, cross-cultural collaboration skills, and understanding of modern software development practices. The combination of technical depth (Vue.js + NestJS microservices) and business impact (low-code automation platform) showcases the ability to deliver value in complex, real-world environments.
+
+**`─────────────────────────────────────────────────`**

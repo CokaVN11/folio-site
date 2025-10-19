@@ -1,10 +1,11 @@
 ---
 title: 'AI Video Search Engine'
-date: '2025-09-01'
+startDate: '2025-09-01'
+endDate: '2025-10-01'
 summary: 'Built an AI-powered video search engine supporting natural language queries across millions of frames with BEiT3 + FAISS backend.'
-tags: ['AI/ML', 'FastAPI', 'FAISS', 'Next.js', 'Natural Language Processing', 'Vector Search']
-cover: '/images/exp/ai-image-search/cover.webp'
-role: 'AI/ML Engineer & Full-Stack Developer'
+tags: ['AI/ML', 'FastAPI', 'FAISS', 'Next.js', 'NLP']
+cover: '/images/projects/ai-image-search.png'
+role: 'Full-Stack Developer'
 tech: ['FastAPI', 'FAISS', 'BEiT3', 'Next.js 15', 'MongoDB', 'DigitalOcean', 'Python']
 featured: true
 draft: false
@@ -24,37 +25,6 @@ An innovative AI-powered search engine that enables natural language queries acr
 - **FAISS Vector Database**: Facebook AI Similarity Search for efficient similarity matching
 - **Frame Extraction**: Intelligent video processing and frame indexing
 - **Natural Language Processing**: Text-to-vector embedding for query understanding
-
-### Architecture Overview
-
-```python
-# AI processing pipeline with BEiT3 + FAISS
-class VideoSearchEngine:
-    def __init__(self):
-        self.model = BeitModel.from_pretrained('microsoft/beit-base-patch16-224-pt22k')
-        self.faiss_index = faiss.IndexFlatIP(768)  # 768-dimensional embeddings
-        self.video_metadata = MongoDBManager()
-
-    def process_video(self, video_path: str):
-        """Extract frames and generate embeddings"""
-        frames = self.extract_frames(video_path, fps=1)
-        embeddings = []
-
-        for frame in frames:
-            embedding = self.model.encode(frame)
-            embeddings.append(embedding.numpy())
-
-        # Add to FAISS index with metadata
-        self.faiss_index.add(embeddings)
-        self.video_metadata.store_frames(video_path, embeddings)
-
-    def search(self, query: str, k: int = 10):
-        """Natural language search with semantic similarity"""
-        query_embedding = self.model.encode(query)
-        distances, indices = self.faiss_index.search(query_embedding.numpy(), k)
-
-        return self.video_metadata.get_frame_metadata(indices, distances)
-```
 
 ## 🔍 Search Features
 

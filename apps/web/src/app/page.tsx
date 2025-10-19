@@ -23,7 +23,7 @@ export default async function Home() {
           __html: JSON.stringify(personSchema),
         }}
       />
-      <main className="space-y-10 bg-background mx-auto px-4 md:px-2 py-6 sm:py-8 lg:py-10 max-w-4xl min-h-[100dvh] container">
+      <main className="space-y-10 bg-background mx-auto px-4 md:px-2 py-6 sm:py-8 lg:py-10 max-w-2xl min-h-[100dvh] container">
         {/* Hero Section */}
         <HeroSection
           blurFadeDelay={BLUR_FADE_DELAY}

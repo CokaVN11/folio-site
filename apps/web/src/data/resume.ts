@@ -1,5 +1,5 @@
-import { getProjectsSync } from './generateProjects';
-import { getJobsSync } from './generateJobs';
+import { generateProjects } from './generateProjects';
+import { generateJobs } from './generateJobs';
 
 export const RESUME = {
   // Personal Information
@@ -60,8 +60,8 @@ export const RESUME = {
     'Prettier',
   ],
 
-  // Work Experience (automatically generated from content/job/*.mdx files)
-  work: getJobsSync(),
+  // Work Experience
+  work: await generateJobs(),
 
   // Education
   education: [
@@ -75,8 +75,8 @@ export const RESUME = {
     },
   ],
 
-  // Projects (automatically generated from content/project/*.mdx files)
-  projects: getProjectsSync(),
+  // Projects
+  projects: await generateProjects(),
 };
 
 /**

@@ -8,17 +8,23 @@ import type { Entry } from '@/lib/types';
 
 export interface ProjectData {
   title: string;
+  startDate: string;
+  endDate: string;
   description: string;
   technologies: string[];
   contribution: string;
   featured: boolean;
   href: string;
-  date: string;
   tags: string[];
   cover?: string;
   slug: string;
   role?: string;
   summary?: string;
+  links?: readonly {
+    icon: React.ReactNode;
+    type: string;
+    href: string;
+  }[];
 }
 
 /**
@@ -52,12 +58,14 @@ function transformEntryToProject(entry: Entry): ProjectData {
     contribution: metadata.role || 'Project Contributor',
     featured: metadata.featured || false,
     href: `/project/${slug}`,
-    date: metadata.date,
+    startDate: metadata.startDate || '',
+    endDate: metadata.endDate || '',
     tags: metadata.tags || [],
     cover: metadata.cover,
     slug,
     role: metadata.role,
     summary: metadata.summary,
+    links: metadata.links || [],
   };
 }
 
@@ -72,7 +80,7 @@ export async function generateProjects(): Promise<ProjectData[]> {
     const projects = contentProjects.map(transformEntryToProject);
 
     // Sort by date descending (newest first)
-    projects.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    projects.sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime());
 
     return projects;
   } catch (error) {
@@ -121,27 +129,4 @@ export async function searchProjects(query: string): Promise<ProjectData[]> {
       project.tags.some((tag) => tag.toLowerCase().includes(searchTerm)) ||
       project.technologies.some((tech) => tech.toLowerCase().includes(searchTerm))
   );
-}
-
-// Cache for generated projects to avoid repeated async calls
-let cachedProjects: ProjectData[] | null = null;
-
-/**
- * Synchronous version for use in RESUME object - should be populated at build time
- * For now returns empty array, will be populated by build script
- */
-export function getProjectsSync(): ProjectData[] {
-  if (cachedProjects) {
-    return cachedProjects;
-  }
-
-  // Fallback empty array for development
-  return [];
-}
-
-/**
- * Set cached projects (used by build script)
- */
-export function setCachedProjects(projects: ProjectData[]): void {
-  cachedProjects = projects;
 }

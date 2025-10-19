@@ -1,6 +1,8 @@
 export type Meta = {
   title: string;
   date: string;
+  startDate?: string;
+  endDate?: string;
   summary?: string;
   tags?: string[];
   cover?: string;
@@ -10,6 +12,11 @@ export type Meta = {
   draft?: boolean;
   location?: string;
   type?: string;
+  links?: readonly {
+    icon: React.ReactNode;
+    type: string;
+    href: string;
+  }[];
 };
 
 export type Entry = {
