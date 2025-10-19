@@ -2,6 +2,7 @@ import { readFile, readdir } from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
 import { Entry, Meta } from './types';
+import { validateMetadataDates, safeParseDate } from './utils/date';
 
 const contentDirectory = path.join(process.cwd(), 'src', 'content');
 
@@ -11,6 +12,13 @@ async function readMDXFile(filePath: string): Promise<Entry> {
 
   const slug = path.basename(filePath, '.mdx');
   const metadata = data as Meta;
+
+  // Validate metadata dates
+  const dateValidation = validateMetadataDates(metadata);
+  if (!dateValidation.isValid) {
+    console.error(`Invalid dates in ${filePath}:`, dateValidation.errors);
+    throw new Error(`Invalid date format in ${filePath}: ${dateValidation.errors.join(', ')}`);
+  }
 
   return {
     slug,
@@ -33,7 +41,7 @@ export async function getProject(): Promise<Entry[]> {
     // Filter out drafts and sort by date descending
     return entries
       .filter((entry) => !entry.metadata.draft)
-      .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+      .sort((a, b) => safeParseDate(b.metadata.date).getTime() - safeParseDate(a.metadata.date).getTime());
   } catch (error) {
     console.error('Error reading project content:', error);
     return [];
@@ -54,7 +62,7 @@ export async function getJobs(): Promise<Entry[]> {
     // Filter out drafts and sort by date descending
     return entries
       .filter((entry) => !entry.metadata.draft)
-      .sort((a, b) => new Date(b.metadata.date).getTime() - new Date(a.metadata.date).getTime());
+      .sort((a, b) => safeParseDate(b.metadata.date).getTime() - safeParseDate(a.metadata.date).getTime());
   } catch (error) {
     console.error('Error reading job content:', error);
     return [];
