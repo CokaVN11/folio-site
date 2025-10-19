@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getProjectEntry, getProject } from '@/lib/content';
 import { MDXRenderer } from '@/lib/mdx';
 
+export const dynamic = 'force-static'; // Force static generation for all slugs
 export const revalidate = 3600; // Revalidate every hour
 
 export async function generateStaticParams() {
