@@ -7,7 +7,7 @@ export const RESUME = {
   initials: 'KN',
   title: 'Full-Stack Developer',
   tagline: "I'm a full stack developer, learning new things everyday to build better products.",
-  avatar: '/avatar.jpg',
+  avatar: '/avatar.webp',
   url: 'https://portfolio.coka.id.vn',
   location: 'Ho Chi Minh City, Vietnam',
   description:
