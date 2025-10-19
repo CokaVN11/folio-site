@@ -40,3 +40,15 @@ variable "certificate_arn" {
   default     = "arn:aws:acm:us-east-1:066604590083:certificate/49ecc09e-72ae-48fb-9b58-2f15aae52b07"
 }
 
+variable "notification_email" {
+  description = "Email address to receive contact form notifications"
+  type        = string
+  default     = ""
+}
+
+variable "from_email" {
+  description = "Email address to send notifications from (must be verified in SES)"
+  type        = string
+  default     = ""
+}
+

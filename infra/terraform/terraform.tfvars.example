@@ -15,3 +15,8 @@ site_origin = "https://portfolio.coka.id.vn"
 # Optional: Path to Lambda deployment package
 # lambda_zip_path = "../../apps/services/lambda/dist/handler.zip"
 
+# Email configuration for contact form notifications
+# Leave empty to disable email functionality
+from_email = "noreply@yourdomain.com"
+notification_email = "your.email@example.com"
+

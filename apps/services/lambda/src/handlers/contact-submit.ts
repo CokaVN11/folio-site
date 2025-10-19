@@ -5,6 +5,7 @@ import { validateRequestBody, handleValidationError } from '../shared/validation
 import { successResponse, errorResponse } from '../shared/responses.js';
 import { ContactPayloadSchema, type ContactMessage } from '../schemas/contact.js';
 import { saveContactMessage } from '../services/ddb.js';
+import { sendContactNotificationEmail, isEmailConfigured } from '../services/email.js';
 
 /**
  * Handle contact form submissions
@@ -48,16 +49,38 @@ export async function handleContactSubmit(
     // Save to DynamoDB
     await saveContactMessage(contactMessage);
 
+    // Send email notification if configured
+    let emailSent = false;
+    let emailError = null;
+
+    if (isEmailConfigured()) {
+      try {
+        await sendContactNotificationEmail(contactMessage);
+        emailSent = true;
+        console.log('Email notification sent successfully for message:', contactMessage.id);
+      } catch (emailError) {
+        emailError = emailError instanceof Error ? emailError.message : 'Unknown email error';
+        console.error('Failed to send email notification:', emailError);
+        // Don't fail the entire request, just log the error
+        // The message was still saved to DynamoDB successfully
+      }
+    } else {
+      console.log('Email not configured - skipping email notification');
+    }
+
     // Return success response
-    return successResponse(
-      {
-        message: 'Contact message received successfully',
-        id: contactMessage.id,
-        createdAt: contactMessage.timestamp,
-      },
-      201,
-      origin
-    );
+    const responseData: any = {
+      message: 'Contact message received successfully',
+      id: contactMessage.id,
+      createdAt: contactMessage.timestamp,
+      emailSent,
+    };
+
+    if (emailError) {
+      responseData.emailWarning = 'Email notification failed, but message was saved';
+    }
+
+    return successResponse(responseData, 201, origin);
   } catch (error) {
     console.error('Error processing contact request:', error);
 

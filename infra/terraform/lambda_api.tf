@@ -73,6 +73,36 @@ resource "aws_iam_role_policy" "lambda_s3" {
   })
 }
 
+# Policy for SES access (sending emails)
+resource "aws_iam_role_policy" "lambda_ses" {
+  name = "${var.project_name}-lambda-ses-policy"
+  role = aws_iam_role.lambda.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ses:SendEmail",
+          "ses:SendRawEmail"
+        ]
+        Resource = "*"
+        # More restrictive approach when from_email is configured:
+        # Resource = var.from_email != "" ? [aws_ses_email_identity.from_email[0].arn] : ["*"]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ses:GetSendQuota",
+          "ses:GetSendStatistics"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 # Lambda function
 resource "aws_lambda_function" "contact" {
   function_name = "${var.project_name}-api-${var.environment}"
@@ -90,6 +120,9 @@ resource "aws_lambda_function" "contact" {
     variables = {
       TABLE_NAME = aws_dynamodb_table.contact_messages.name
       ALLOWED_ORIGIN = var.site_origin != "" ? var.site_origin : "*"
+      NOTIFICATION_EMAIL = var.notification_email
+      FROM_EMAIL = var.from_email
+      SES_CONFIGURATION_SET = var.from_email != "" ? aws_ses_configuration_set.contact_notifications.name : ""
     }
   }
 
@@ -100,7 +133,8 @@ resource "aws_lambda_function" "contact" {
   depends_on = [
     aws_iam_role_policy_attachment.lambda_basic,
     aws_iam_role_policy.lambda_dynamodb,
-    aws_iam_role_policy.lambda_s3
+    aws_iam_role_policy.lambda_s3,
+    aws_iam_role_policy.lambda_ses
   ]
 }
 

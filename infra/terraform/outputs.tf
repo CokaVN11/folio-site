@@ -33,3 +33,18 @@ output "lambda_function_name" {
   value       = aws_lambda_function.contact.function_name
 }
 
+output "ses_configuration_set_name" {
+  description = "Name of the SES configuration set for email tracking"
+  value       = var.from_email != "" ? aws_ses_configuration_set.contact_notifications.name : ""
+}
+
+output "from_email_verified" {
+  description = "Whether the from email is verified in SES"
+  value       = var.from_email != "" ? true : false
+}
+
+output "notification_email_verified" {
+  description = "Whether the notification email is verified in SES"
+  value       = var.notification_email != "" ? true : false
+}
+
