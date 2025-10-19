@@ -38,7 +38,7 @@ export function isValidDateRange(dateString: string): boolean {
   const now = new Date();
 
   // Allow dates up to 1 month in the future (for upcoming projects)
-  const oneMonthFromNow = new Date(now.getTime() + (30 * 24 * 60 * 60 * 1000));
+  const oneMonthFromNow = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 
   return date <= oneMonthFromNow;
 }
@@ -49,7 +49,10 @@ export function isValidDateRange(dateString: string): boolean {
  * @param fallbackDate - Fallback date if parsing fails (default: current date)
  * @returns Valid Date object
  */
-export function safeParseDate(dateString: string | undefined, fallbackDate: Date = new Date()): Date {
+export function safeParseDate(
+  dateString: string | undefined,
+  fallbackDate: Date = new Date()
+): Date {
   if (!dateString) {
     return fallbackDate;
   }
@@ -110,19 +113,24 @@ export function validateMetadataDates(metadata: Record<string, any>): {
   }
 
   // Validate date range logic if both start and end dates are present
-  if (metadata.startDate && metadata.endDate &&
-      isValidDateString(metadata.startDate) &&
-      isValidDateString(metadata.endDate)) {
+  if (
+    metadata.startDate &&
+    metadata.endDate &&
+    isValidDateString(metadata.startDate) &&
+    isValidDateString(metadata.endDate)
+  ) {
     const start = new Date(metadata.startDate);
     const end = new Date(metadata.endDate);
 
     if (start > end) {
-      errors.push(`startDate "${metadata.startDate}" cannot be after endDate "${metadata.endDate}".`);
+      errors.push(
+        `startDate "${metadata.startDate}" cannot be after endDate "${metadata.endDate}".`
+      );
     }
   }
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 }

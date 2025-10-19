@@ -41,7 +41,10 @@ export async function getProject(): Promise<Entry[]> {
     // Filter out drafts and sort by date descending
     return entries
       .filter((entry) => !entry.metadata.draft)
-      .sort((a, b) => safeParseDate(b.metadata.date).getTime() - safeParseDate(a.metadata.date).getTime());
+      .sort(
+        (a, b) =>
+          safeParseDate(b.metadata.date).getTime() - safeParseDate(a.metadata.date).getTime()
+      );
   } catch (error) {
     console.error('Error reading project content:', error);
     return [];
@@ -62,7 +65,10 @@ export async function getJobs(): Promise<Entry[]> {
     // Filter out drafts and sort by date descending
     return entries
       .filter((entry) => !entry.metadata.draft)
-      .sort((a, b) => safeParseDate(b.metadata.date).getTime() - safeParseDate(a.metadata.date).getTime());
+      .sort(
+        (a, b) =>
+          safeParseDate(b.metadata.date).getTime() - safeParseDate(a.metadata.date).getTime()
+      );
   } catch (error) {
     console.error('Error reading job content:', error);
     return [];

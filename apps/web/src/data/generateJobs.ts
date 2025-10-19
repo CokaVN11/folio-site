@@ -63,6 +63,8 @@ function transformEntryToJob(entry: Entry): JobData {
     description,
     summary: metadata.summary,
     date: metadata.date,
+    startDate: metadata.startDate,
+    endDate: metadata.endDate,
     technologies: metadata.tech || [],
     tags: metadata.tags || [],
     cover: metadata.cover,

@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { JobData } from '@/data/generateJobs';
+import { Badge } from '../ui/badge';
+import { SparklesText } from '../ui/sparkles-text';
 
 interface ExperienceSectionProps {
   work: JobData[];
@@ -10,13 +12,14 @@ interface ExperienceSectionProps {
 export function ExperienceSection({ work }: ExperienceSectionProps) {
   return (
     <section id="experience" className="mx-auto w-full" aria-labelledby="experience-heading">
-      <div className="mb-12 text-center">
-        <h2 id="experience-heading" className="mb-4 font-bold text-foreground text-4xl">
+      <div className="flex flex-col justify-center items-center gap-2 mb-8 text-center">
+        <Badge className="mx-auto max-w-fit">Experience</Badge>
+        <SparklesText className="font-bold text-2xl sm:text-3xl md:text-5xl tracking-tighter">
           Career Journey
-        </h2>
-        <p className="mx-auto max-w-2xl text-muted-foreground text-xl">
-          My professional journey through various roles and companies, showcasing growth and
-          expertise in software engineering.
+        </SparklesText>
+        <p className="text-muted-foreground lg:text-base/relaxed md:text-xl/relaxed xl:text-xl/relaxed">
+          Through roles at several companies, I&apos;ve gradually grown my understanding of software
+          engineering.
         </p>
       </div>
 

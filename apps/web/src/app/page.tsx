@@ -42,10 +42,14 @@ export default async function Home() {
           <ProjectsSection projects={RESUME.projects} />
         </BlurFade>
 
+        <Separator className="bg-gradient-to-r from-transparent via-[#0070F3] to-transparent w-full h-1" />
+
         {/* Experience Section */}
         <BlurFade delay={BLUR_FADE_DELAY * 8} inView={true} direction="down">
           <ExperienceSection work={RESUME.work} />
         </BlurFade>
+
+        <Separator className="bg-gradient-to-r from-transparent via-[#0070F3] to-transparent w-full h-1" />
 
         {/* Education Section */}
         <BlurFade delay={BLUR_FADE_DELAY * 5} inView={true} direction="down">

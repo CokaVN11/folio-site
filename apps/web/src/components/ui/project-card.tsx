@@ -1,14 +1,8 @@
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface Props {
   title: string;
@@ -42,13 +36,10 @@ export function ProjectCard({
   return (
     <Card
       className={
-        "max-w-[300px] flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full"
+        'max-w-[300px] flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full'
       }
     >
-      <Link
-        href={href || "#"}
-        className={cn("block cursor-pointer", className)}
-      >
+      <Link href={href || '#'} className={cn('block cursor-pointer', className)}>
         {video && (
           <video
             src={video}
@@ -74,7 +65,7 @@ export function ProjectCard({
           <CardTitle className="mt-1 text-base">{title}</CardTitle>
           <time className="font-sans text-xs">{dates}</time>
           <div className="hidden print:visible font-sans text-xs underline">
-            {link?.replace("https://", "").replace("www.", "").replace("/", "")}
+            {link?.replace('https://', '').replace('www.', '').replace('/', '')}
           </div>
           <p className="dark:prose-invert max-w-full font-sans text-muted-foreground text-xs text-pretty prose">
             {description}
@@ -85,11 +76,7 @@ export function ProjectCard({
         {tags && tags.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {tags?.map((tag) => (
-              <Badge
-                className="px-1 py-0 text-[10px]"
-                variant="secondary"
-                key={tag}
-              >
+              <Badge className="px-1 py-0 text-[10px]" variant="secondary" key={tag}>
                 {tag}
               </Badge>
             ))}

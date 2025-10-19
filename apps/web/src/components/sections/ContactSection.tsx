@@ -67,7 +67,7 @@ export function ContactSection() {
   return (
     <section
       id="contact"
-      className="mx-auto px-4 pb-14 sm:pb-20 container"
+      className="mx-auto pb-14 sm:pb-20 w-full"
       aria-labelledby="contact-heading"
     >
       <ContactCard

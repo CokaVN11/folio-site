@@ -1,6 +1,8 @@
 ---
 title: 'Software Engineer Intern - Grab'
-date: '2024-12-31'
+date: '2024-12-16'
+startDate: '2024-06-17'
+endDate: '2024-12-16'
 summary: 'Developed frontend modules in Vue.js and contributed to NestJS microservices, enhancing automation features for an internal low-code platform that improved operational tracking and reduced manual processes.'
 tags: ['FinTech', 'Superapp', 'Vue.js', 'NestJS', 'Microservices', 'Low-Code', 'Automation']
 cover: '/images/jobs/grab.png'
@@ -21,6 +23,7 @@ draft: false
 As a Software Engineer Intern on the **Internal Automation Platform** team, I worked in a distributed Agile environment with colleagues across Vietnam, Singapore, and other Southeast Asian offices. My role spanned the full development lifecycle, from requirements gathering to deployment and monitoring.
 
 **Key Responsibilities:**
+
 - Frontend module development using Vue.js 3 with TypeScript
 - Backend microservice contributions using NestJS framework
 - API design and implementation for platform features
@@ -35,8 +38,8 @@ I developed several key frontend modules for the low-code automation platform us
 
 ```typescript
 // Component architecture with Composition API
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'WorkflowBuilder',
@@ -44,20 +47,21 @@ export default defineComponent({
     const workflowState = ref<WorkflowState>({
       nodes: [],
       connections: [],
-      isRunning: false
-    })
+      isRunning: false,
+    });
 
     // Reactive state management for complex workflows
     const availableActions = computed(() =>
       filterActionsByPermission(workflowState.value.currentRole)
-    )
+    );
 
-    return { workflowState, availableActions }
-  }
-})
+    return { workflowState, availableActions };
+  },
+});
 ```
 
 **Technical Challenges Solved:**
+
 - Implemented reactive state management for complex workflow visualizations
 - Created reusable component library for consistent UI patterns
 - Optimized rendering performance for large-scale workflow diagrams
@@ -79,17 +83,15 @@ export class WorkflowExecutionService {
 
   @Cron('*/5 * * * *') // Every 5 minutes
   async processScheduledWorkflows() {
-    const pendingWorkflows = await this.workflowRepository
-      .findByStatus(WorkflowStatus.SCHEDULED)
+    const pendingWorkflows = await this.workflowRepository.findByStatus(WorkflowStatus.SCHEDULED);
 
-    await Promise.allSettled(
-      pendingWorkflows.map(workflow => this.executeWorkflow(workflow))
-    )
+    await Promise.allSettled(pendingWorkflows.map((workflow) => this.executeWorkflow(workflow)));
   }
 }
 ```
 
 **Microservice Contributions:**
+
 - Workflow execution engine with task scheduling
 - Real-time notification system for workflow status updates
 - Audit logging service for compliance and monitoring
@@ -123,11 +125,13 @@ The core project was enhancing Grab's internal low-code automation platform, ena
 Working across multiple time zones (Vietnam, Singapore, Malaysia), I adapted to Grab's enterprise Agile practices:
 
 **Daily Ceremonies:**
+
 - Standup meetings rotating across time zones to accommodate all team members
 - Sprint planning with remote collaboration tools (Miro, Teams)
 - Retrospectives focusing on process improvement for distributed teams
 
 **Code Review Culture:**
+
 - Participated in 15+ code reviews per sprint
 - Provided constructive feedback on both frontend and backend code
 - Learned enterprise-level code quality standards and security practices
@@ -143,18 +147,21 @@ Working across multiple time zones (Vietnam, Singapore, Malaysia), I adapted to 
 ### Technical Skills Enhanced
 
 **Frontend Development:**
+
 - Vue.js 3 Composition API and advanced patterns
 - TypeScript for type-safe large-scale applications
 - State management with Pinia in complex applications
 - Component library design and documentation
 
 **Backend Development:**
+
 - NestJS framework and microservices architecture
 - RESTful API design and OpenAPI documentation
 - Database design with PostgreSQL
 - Docker containerization and deployment strategies
 
 **System Design:**
+
 - Enterprise software architecture patterns
 - Scalability and performance optimization
 - Security best practices in FinTech applications
@@ -163,12 +170,14 @@ Working across multiple time zones (Vietnam, Singapore, Malaysia), I adapted to 
 ### Professional Development
 
 **Software Engineering Practices:**
+
 - Test-driven development and automated testing
 - CI/CD pipeline understanding and deployment
 - Code quality metrics and static analysis
 - Technical documentation and knowledge sharing
 
 **Business Acumen:**
+
 - Understanding of superapp business models
 - Operational efficiency and process automation
 - Enterprise software requirements and constraints
@@ -181,12 +190,14 @@ Working across multiple time zones (Vietnam, Singapore, Malaysia), I adapted to 
 This internship transformed my theoretical knowledge into practical, enterprise-scale development skills:
 
 **From Academic to Professional:**
+
 - Applied computer science concepts to real-world business problems
 - Learned industry-standard development practices and tooling
 - Understood the importance of maintainable, scalable code architecture
 - Gained experience with version control in large team environments
 
 **Problem-Solving Evolution:**
+
 - Developed systematic debugging approaches for complex systems
 - Learned to balance technical solutions with business requirements
 - Practiced incremental development and iterative improvement
@@ -195,12 +206,14 @@ This internship transformed my theoretical knowledge into practical, enterprise-
 ### Career Development
 
 **Industry Exposure:**
+
 - Gained insight into Southeast Asia's tech ecosystem
 - Understanding of superapp business models and challenges
 - Exposure to enterprise-scale software development lifecycle
 - Network with professionals across different roles and expertise levels
 
 **Soft Skills Enhancement:**
+
 - Cross-cultural communication in global teams
 - Time management and priority setting in fast-paced environment
 - Presentation skills and technical communication

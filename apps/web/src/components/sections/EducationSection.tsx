@@ -15,7 +15,7 @@ export function EducationSection({ education }: EducationSectionProps) {
       <div className="mx-auto">
         <div className="flex flex-col gap-y-4 sm:gap-y-6 min-h-0">
           <BlurFade delay={0.1} inView>
-            <div>
+            <div className="text-center">
               <AnimatedGradientText
                 speed={1}
                 colorFrom="#0070F3"
@@ -24,7 +24,6 @@ export function EducationSection({ education }: EducationSectionProps) {
               >
                 Education
               </AnimatedGradientText>
-              {/* <Separator className="bg-gradient-to-r from-blue-400 to-purple-400 h-1"></Separator> */}
             </div>
           </BlurFade>
 
