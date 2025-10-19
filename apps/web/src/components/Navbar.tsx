@@ -98,7 +98,7 @@ export default function Navbar() {
       <div className="sm:hidden bottom-0 z-30 fixed inset-x-0 flex mx-auto mb-4 h-full max-h-14 origin-bottom">
         <div className="bottom-0 fixed inset-x-0 bg-background/80 dark:bg-background/80 backdrop-blur-lg w-full h-16"></div>
 
-        <div className="z-50 relative flex justify-around items-center bg-background/90 dark:bg-background/90 shadow-lg mx-auto px-2 border border-border/20 rounded-full h-14 min-h-full transform-gpu pointer-events-auto">
+        <div className="bottom-[8px] z-50 relative flex justify-around items-center bg-background/70 dark:bg-background/70 shadow-lg mx-auto px-2 border border-border rounded-full h-14 min-h-full transform-gpu pointer-events-auto">
           {/* Primary Mobile Navigation */}
           {primaryMobileNav.map((item) => (
             <Link

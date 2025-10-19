@@ -43,10 +43,10 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
     <div className="w-full font-sans" ref={containerRef}>
       <div ref={ref} className="relative mx-auto max-w-4xl">
         {jobs.map((job, _) => (
-          <div key={job.slug} className="flex justify-start md:gap-6 mt-8 first:mt-0">
+          <div key={job.slug} className="flex justify-start gap-4 md:gap-6 mt-8 first:mt-0">
             {/* Timeline dot and year - 1/4 width on desktop */}
-            <div className="top-24 z-40 sticky flex md:flex-row flex-col items-center self-start w-full md:w-1/4">
-              <div className="left-3 md:left-3 absolute flex justify-center items-center bg-background rounded-full w-10 h-10">
+            <div className="top-24 z-40 sticky flex items-center self-start w-auto md:w-1/4">
+              <div className="-left-1 md:left-3 absolute flex justify-center items-center bg-background rounded-full w-10 h-10">
                 <div id="timeline-dot" className="bg-[#0070F3] rounded-full w-4 h-4" />
               </div>
               <div className="hidden md:block md:pl-20 text-center">
@@ -69,10 +69,10 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
             </div>
 
             {/* Job content - 3/4 width on desktop */}
-            <div className="relative pr-4 pl-16 md:pl-4 md:w-3/4">
+            <div className="relative flex-1 pr-4 pl-6 md:pl-4">
               {/* Mobile header */}
               <div className="md:hidden mb-4">
-                <h3 className="font-bold text-muted-foreground text-xl">
+                <h3 className="font-bold text-foreground text-2xl">
                   {isCurrentMonth(job) ? (
                     <Highlighter
                       color="#fbbf24"
@@ -86,12 +86,12 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
                     formatTimelineDate(job)
                   )}
                 </h3>
-                <p className="text-muted-foreground text-sm">{job.company}</p>
+                <p className="text-muted-foreground text-base">{job.company}</p>
               </div>
 
               {/* Job card */}
               <Link href={job.href}>
-                <Card className="group relative hover:shadow-lg p-4 border hover:border-primary/20 border-border transition-all duration-300">
+                <Card className="group relative hover:shadow-lg p-2 sm:p-4 border hover:border-primary/20 border-border transition-all duration-300">
                   {/* Absolute positioned badges */}
                   {(job.featured || isPresentJob(job)) && (
                     <div className="top-0 right-0 z-10 absolute flex flex-col gap-2 -translate-y-1/2 translate-x-1/2">
@@ -108,7 +108,7 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
 
                   {/* Job header */}
                   <CardHeader className="flex-1 p-0">
-                    <CardTitle className="flex items-center gap-2 mb-2 w-full text-foreground group-hover:text-primary text-xl leading-tight transition-colors">
+                    <CardTitle className="flex items-center gap-2 mb-2 w-full text-foreground group-hover:text-primary text-base sm:text-lg md:text-xl leading-tight transition-colors">
                       {job.role}
                       <Separator orientation="vertical" className="h-4" />
                       <span className="text-primary">{job.company}</span>
@@ -118,7 +118,7 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
                   <CardContent className="space-y-2 p-0">
                     {/* Cover image */}
                     {job.cover && (
-                      <div className="relative shadow-inner rounded-xl w-full h-56 overflow-hidden">
+                      <div className="relative shadow-inner rounded-xl w-full h-32 sm:h-48 md:h-56 overflow-hidden">
                         <Image
                           src={job.cover}
                           alt={`${job.company} - ${job.role}`}
@@ -129,51 +129,57 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
                         />
                       </div>
                     )}
-
                     {/* Meta information */}
-                    <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
-                      <span className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-lg">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-muted-foreground text-xs sm:text-sm">
+                      <Badge
+                        variant="outline"
+                        className="flex items-center gap-2 px-1.5 sm:px-3 py-1 sm:py-1.5 rounded-lg font-medium tracking-tight"
+                      >
                         📅 {formatDateRange(job)}
-                      </span>
+                      </Badge>
                       {job.location && (
-                        <span className="flex items-center gap-2 bg-muted/50 px-3 py-1.5 rounded-lg">
+                        <Badge
+                          variant="outline"
+                          className="flex items-center gap-2 px-1.5 sm:px-3 py-1 sm:py-1.5 rounded-lg font-medium"
+                        >
                           📍 {job.location}
-                        </span>
+                        </Badge>
                       )}
                       {job.type && (
                         <Badge
-                          variant="secondary"
-                          className="px-3 py-1.5 rounded-lg font-medium text-xs"
+                          variant="outline"
+                          className="px-1.5 sm:px-3 py-1 sm:py-1.5 rounded-lg font-medium text-xs sm:text-xs"
                         >
                           {job.type}
                         </Badge>
                       )}
                     </div>
-
                     {/* Description */}
                     {(job.summary || job.description) && (
-                      <p className="text-muted-foreground text-sm leading-tight">
+                      <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
                         {job.summary || job.description}
                       </p>
                     )}
-
                     {/* Technologies */}
                     {job.technologies && job.technologies.length > 0 && (
-                      <div className="pb-2">
+                      <div className="pb-2 sm:pb-0">
                         <div className="flex flex-wrap gap-2">
-                          {job.technologies.slice(0, 3).map((tech) => (
-                            <Badge
-                              key={tech}
-                              variant="secondary"
-                              className="px-1.5 py-0.5 rounded-lg font-medium text-xs transition-colors"
-                            >
-                              {tech}
-                            </Badge>
-                          ))}
+                          {job.technologies
+                            .sort((a, b) => a.length - b.length)
+                            .slice(0, 3)
+                            .map((tech) => (
+                              <Badge
+                                key={tech}
+                                variant="secondary"
+                                className="px-1.5 sm:px-3 py-1 sm:py-0.5 rounded-lg font-medium text-xs transition-colors"
+                              >
+                                {tech}
+                              </Badge>
+                            ))}
                           {job.technologies.length > 3 && (
                             <Badge
                               variant="secondary"
-                              className="px-1.5 py-0.5 rounded-lg font-medium text-xs transition-colors"
+                              className="px-1.5 sm:px-3 py-0.5 rounded-lg font-medium text-xs transition-colors"
                             >
                               +{job.technologies.length - 3}
                             </Badge>
@@ -193,7 +199,7 @@ export function ExperienceTimeline({ jobs }: ExperienceTimelineProps) {
           style={{
             height: height + 'px',
           }}
-          className="top-0 left-8 md:left-8 absolute bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-[0%] from-transparent via-[#0070F3]/20 to-[99%] to-transparent rounded-full w-[2px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
+          className="top-0 left-4 md:left-8 absolute bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-[0%] from-transparent via-[#0070F3]/20 to-[99%] to-transparent rounded-full w-[2px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_90%,transparent_100%)]"
         >
           <motion.div
             style={{

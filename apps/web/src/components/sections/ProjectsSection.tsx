@@ -1,9 +1,9 @@
 'use client';
 
 import type { ProjectData } from '@/data/generateProjects';
-import { ProjectCard } from '../ui/project-card';
-import { Badge } from '../ui/badge';
-import { SparklesText } from '../ui/sparkles-text';
+import { ProjectCard } from '@/components/ui/project-card';
+import { Badge } from '@/components/ui/badge';
+import { SparklesText } from '@/components/ui/sparkles-text';
 
 interface ProjectsSectionProps {
   projects: ProjectData[];
@@ -11,7 +11,11 @@ interface ProjectsSectionProps {
 
 export function ProjectsSection({ projects }: ProjectsSectionProps) {
   return (
-    <section id="projects" className="mx-auto w-full" aria-labelledby="projects-heading">
+    <section
+      id="projects"
+      className="mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl"
+      aria-labelledby="projects-heading"
+    >
       <div className="flex flex-col justify-center items-center gap-2 mb-8 text-center">
         <Badge className="mx-auto max-w-fit">Featured Projects</Badge>
         <SparklesText className="font-bold text-2xl sm:text-3xl md:text-5xl tracking-tighter">
@@ -24,7 +28,7 @@ export function ProjectsSection({ projects }: ProjectsSectionProps) {
       </div>
 
       {projects.length > 0 ? (
-        <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 mx-auto">
+        <div className="justify-center sm:justify-normal gap-6 grid grid-cols-1 sm:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard
               key={project.title}

@@ -37,7 +37,7 @@ export function ProjectCard({
     <Link href={href || '#'} className={cn('block cursor-pointer', className)}>
       <Card
         className={
-          'max-w-[300px] flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full'
+          'flex flex-col overflow-hidden border hover:shadow-lg transition-all duration-300 ease-out h-full mx-auto'
         }
       >
         {video && (
