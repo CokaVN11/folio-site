@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getJobEntry, getJobs } from '@/lib/content';
 import { MDXRenderer } from '@/lib/mdx';
-import type { Metadata } from 'next';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -75,15 +74,15 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
           __html: JSON.stringify(creativeWorkSchema),
         }}
       />
-      <article className="min-h-screen bg-background">
-        <div className="container px-4 py-16 mx-auto max-w-4xl">
+      <article className="bg-background min-h-screen">
+        <div className="mx-auto px-4 py-16 max-w-4xl container">
           {/* Back Navigation */}
           <div className="mb-8">
             <Link
-              href="/job"
+              href="/"
               className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors"
             >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -99,7 +98,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
           <header className="mb-12">
             {/* Cover Image */}
             {entry.metadata.cover && (
-              <div className="relative w-full h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
+              <div className="relative mb-8 rounded-lg w-full h-64 md:h-96 overflow-hidden">
                 <Image
                   src={entry.metadata.cover}
                   alt={entry.metadata.title}
@@ -113,22 +112,22 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
 
             {/* Title and Meta */}
             <div className="text-center">
-              <h1 className="mb-4 text-4xl md:text-5xl font-bold text-foreground">
+              <h1 className="mb-4 font-bold text-foreground text-4xl md:text-5xl">
                 {entry.metadata.title}
               </h1>
 
               {/* Role */}
               {entry.metadata.role && (
                 <div className="mb-6">
-                  <h2 className="text-2xl font-semibold text-primary">{entry.metadata.role}</h2>
+                  <h2 className="font-semibold text-primary text-2xl">{entry.metadata.role}</h2>
                 </div>
               )}
 
-              <div className="flex flex-wrap items-center justify-center gap-4 mb-6 text-muted-foreground">
+              <div className="flex flex-wrap justify-center items-center gap-4 mb-6 text-muted-foreground">
                 {/* Date */}
                 <time className="flex items-center">
                   <svg
-                    className="w-4 h-4 mr-2"
+                    className="mr-2 w-4 h-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -150,7 +149,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
 
               {/* Summary */}
               {entry.metadata.summary && (
-                <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
+                <p className="mx-auto mb-8 max-w-3xl text-muted-foreground text-xl">
                   {entry.metadata.summary}
                 </p>
               )}
@@ -158,14 +157,14 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
               {/* Technologies */}
               {entry.metadata.tech && entry.metadata.tech.length > 0 && (
                 <div className="mb-8">
-                  <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
+                  <h3 className="mb-3 font-semibold text-muted-foreground text-sm uppercase tracking-wider">
                     Technologies Used
                   </h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {entry.metadata.tech.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 text-sm font-medium bg-secondary text-secondary-foreground rounded-full"
+                        className="bg-secondary px-3 py-1 rounded-full font-medium text-secondary-foreground text-sm"
                       >
                         {tech}
                       </span>
@@ -177,14 +176,14 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
               {/* Tags */}
               {entry.metadata.tags && entry.metadata.tags.length > 0 && (
                 <div>
-                  <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
+                  <h3 className="mb-3 font-semibold text-muted-foreground text-sm uppercase tracking-wider">
                     Areas of Focus
                   </h3>
                   <div className="flex flex-wrap justify-center gap-2">
                     {entry.metadata.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 text-sm bg-muted text-muted-foreground rounded-full"
+                        className="bg-muted px-3 py-1 rounded-full text-muted-foreground text-sm"
                       >
                         #{tag}
                       </span>
@@ -196,7 +195,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
               {/* Featured Badge */}
               {entry.metadata.featured && (
                 <div className="mt-6">
-                  <span className="px-3 py-1 text-sm font-medium bg-primary text-primary-foreground rounded-full">
+                  <span className="bg-primary px-3 py-1 rounded-full font-medium text-primary-foreground text-sm">
                     Key Career Role
                   </span>
                 </div>
@@ -205,7 +204,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
           </header>
 
           {/* Content */}
-          <div className="prose prose-lg max-w-none">
+          <div className="max-w-none prose prose-lg">
             <MDXRenderer content={entry.content} />
           </div>
 
@@ -213,7 +212,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
           <footer className="mt-16 pt-8 border-t border-border">
             <div className="text-center">
               <Link href="/job" className="inline-flex items-center text-primary hover:underline">
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="mr-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"

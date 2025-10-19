@@ -82,11 +82,12 @@ function transformEntryToJob(entry: Entry): JobData {
  */
 function extractJobType(title: string): string {
   const lowerTitle = title.toLowerCase();
-  if (lowerTitle.includes('intern')) return 'internship';
-  if (lowerTitle.includes('freelance')) return 'freelance';
-  if (lowerTitle.includes('contract')) return 'contract';
-  if (lowerTitle.includes('part-time')) return 'part-time';
-  return 'full-time'; // Default assumption
+  let jobType = 'full-time';
+  if (lowerTitle.includes('intern')) jobType = 'internship';
+  if (lowerTitle.includes('freelance')) jobType = 'freelance';
+  if (lowerTitle.includes('contract')) jobType = 'contract';
+  if (lowerTitle.includes('part-time')) jobType = 'part-time';
+  return jobType[0].toUpperCase() + jobType.slice(1);
 }
 
 /**
