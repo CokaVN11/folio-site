@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getJobEntry, getJobs } from '@/lib/content';
 import { MDXRenderer } from '@/lib/mdx';
+import { getImageUrl } from '@/lib/seo-utils';
 
 export const dynamic = 'force-static'; // Force static generation for all slugs
 export const revalidate = 3600; // Revalidate every hour
@@ -24,18 +25,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  const coverImageUrl = getImageUrl(entry.metadata.cover);
+
   return {
     title: `${entry.metadata.title} - Career`,
     description: entry.metadata.summary,
     openGraph: {
       title: entry.metadata.title,
       description: entry.metadata.summary,
-      images: entry.metadata.cover ? [{ url: entry.metadata.cover }] : [],
+      images: coverImageUrl ? [{ url: coverImageUrl }] : [],
       type: 'article',
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/job/${entry.slug}`,
     },
     twitter: {
       card: 'summary_large_image',
-      images: entry.metadata.cover ? [entry.metadata.cover] : [],
+      images: coverImageUrl ? [coverImageUrl] : [],
     },
   };
 }
@@ -48,19 +52,21 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
     notFound();
   }
 
+  const coverImageUrl = getImageUrl(entry.metadata.cover);
+
   const creativeWorkSchema = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
     name: entry.metadata.title,
     description: entry.metadata.summary,
     datePublished: entry.metadata.date,
-    image: entry.metadata.cover,
+    image: coverImageUrl,
     keywords: entry.metadata.tags?.join(', '),
     author: {
       '@type': 'Person',
       name: 'Coka',
     },
-    url: `https://coka.dev/job/${entry.slug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/job/${entry.slug}`,
     about: {
       '@type': 'Thing',
       name: entry.metadata.role,

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Full-Stack Development Projects | Khanh Nguyen Portfolio',
     description:
       'Explore a diverse portfolio of web development projects built with React, Next.js, Vue.js, NestJS, and modern technologies.',
-    url: 'https://portfolio.coka.id.vn/projects',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects`,
     type: 'website',
   },
 };
@@ -67,7 +67,7 @@ export default function Projects() {
     name: 'Full-Stack Development Projects Portfolio',
     description:
       'Portfolio of full-stack web development projects including React applications, Next.js websites, Vue.js solutions, NestJS APIs, and scalable web applications',
-    url: 'https://portfolio.coka.id.vn/projects',
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/projects`,
     mainEntity: {
       '@type': 'ItemList',
       name: 'Web Development Projects',
@@ -89,7 +89,7 @@ export default function Projects() {
       '@type': 'Person',
       name: 'Khanh Nguyen',
       jobTitle: 'Full-Stack Developer',
-      url: 'https://portfolio.coka.id.vn',
+      url: process.env.NEXT_PUBLIC_SITE_URL,
     },
   };
 

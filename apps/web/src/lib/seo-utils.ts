@@ -17,9 +17,25 @@ interface SEOConfig {
   };
 }
 
-const SITE_URL = 'https://portfolio.coka.id.vn';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://portfolio.coka.id.vn';
 const SITE_NAME = 'Khanh Nguyen - Full-Stack Developer Portfolio';
 const AUTHOR_NAME = 'Khanh Nguyen';
+
+/**
+ * Converts a relative image path to an absolute URL
+ */
+export function getImageUrl(imagePath?: string): string | undefined {
+  if (!imagePath) return undefined;
+
+  // If it's already an absolute URL, return as-is
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+
+  // Remove leading slash and join with base URL
+  const cleanPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+  return `${SITE_URL}/${cleanPath}`;
+}
 
 const DEFAULT_META = {
   title: 'Khanh Nguyen - Full-Stack Developer | React & Next.js | Ho Chi Minh City',
@@ -54,6 +70,7 @@ export function generateMetadata(config: SEOConfig = {}): Metadata {
   const fullTitle = config.title ? `${title} | ${SITE_NAME}` : DEFAULT_META.title;
 
   const metadata: Metadata = {
+    metadataBase: new URL(SITE_URL),
     title: fullTitle,
     description,
     keywords,

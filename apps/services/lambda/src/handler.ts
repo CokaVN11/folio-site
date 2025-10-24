@@ -3,12 +3,6 @@ import { corsResponse, getOriginFromRequest } from './shared/cors.js';
 import { errorResponse } from './shared/responses.js';
 import { handleContactSubmit } from './handlers/contact-submit.js';
 
-/**
- * Main Lambda handler that routes requests to appropriate handlers
- *
- * Supported routes:
- * - POST /contact - Contact form submission (public)
- */
 export async function handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2> {
   console.log(
     'Received event:',

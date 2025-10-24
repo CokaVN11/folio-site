@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getProjectEntry, getProject } from '@/lib/content';
 import { MDXRenderer } from '@/lib/mdx';
+import { getImageUrl } from '@/lib/seo-utils';
 
 export const dynamic = 'force-static'; // Force static generation for all slugs
 export const revalidate = 3600; // Revalidate every hour
@@ -23,6 +24,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: 'Experience Not Found',
     };
   }
+
+  const coverImageUrl = getImageUrl(entry.metadata.cover);
 
   return {
     title: `${entry.metadata.title} - Full-Stack Project | Khanh Nguyen Portfolio`,
@@ -48,13 +51,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: entry.metadata.title,
       description:
         entry.metadata.summary || `Full-stack development project: ${entry.metadata.title}`,
-      images: entry.metadata.cover ? [{ url: entry.metadata.cover }] : [],
+      images: coverImageUrl ? [{ url: coverImageUrl }] : [],
       type: 'article',
-      url: `https://portfolio.coka.id.vn/project/${entry.slug}`,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/project/${entry.slug}`,
     },
     twitter: {
       card: 'summary_large_image',
-      images: entry.metadata.cover ? [entry.metadata.cover] : [],
+      images: coverImageUrl ? [coverImageUrl] : [],
     },
   };
 }
@@ -67,20 +70,22 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
     notFound();
   }
 
+  const coverImageUrl = getImageUrl(entry.metadata.cover);
+
   const creativeWorkSchema = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
     name: entry.metadata.title,
     description: entry.metadata.summary,
     datePublished: entry.metadata.date,
-    image: entry.metadata.cover,
+    image: coverImageUrl,
     keywords: entry.metadata.tags?.join(', '),
     genre: 'Web Development',
     author: {
       '@type': 'Person',
       name: 'Khanh Nguyen',
       jobTitle: 'Full-Stack Developer',
-      url: 'https://portfolio.coka.id.vn',
+      url: process.env.NEXT_PUBLIC_SITE_URL,
       sameAs: ['https://github.com/CokaVN11', 'https://linkedin.com/in/ngckhanh'],
     },
     creator: {
@@ -91,10 +96,10 @@ export default async function ExpDetailPage({ params }: { params: Promise<{ slug
       '@type': 'Person',
       name: 'Khanh Nguyen',
     },
-    url: `https://portfolio.coka.id.vn/project/${entry.slug}`,
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/project/${entry.slug}`,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://portfolio.coka.id.vn/project/${entry.slug}`,
+      '@id': `${process.env.NEXT_PUBLIC_SITE_URL}/project/${entry.slug}`,
     },
     programmingLanguage: entry.metadata.tech,
     about: entry.metadata.tags?.map((tag) => ({
