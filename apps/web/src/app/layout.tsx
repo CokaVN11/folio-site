@@ -7,7 +7,13 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import { generateMetadata as generateSEOMetadata } from '@/lib/seo-utils';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap', // Prevents FOIT
+  weight: ['400', '500', '600', '700'], // Only load needed weights
+  preload: true, // Keep preloading
+});
 
 export const metadata: Metadata = generateSEOMetadata();
 
@@ -19,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn(inter.className, 'font-sans antialiased max-w-screen-lg mx-auto')}
+        className={cn(inter.variable, 'font-sans antialiased max-w-screen-lg mx-auto')}
         suppressHydrationWarning
       >
         <TooltipProvider>

@@ -57,5 +57,25 @@ export default {
       },
     },
   },
+  // Add safelist for dynamic classes to prevent purging
+  safelist: [
+    // Preserve animation classes that are used dynamically
+    'animate-fade-in',
+    'animate-slide-up',
+    'animate-pulse',
+    'animate-spin',
+    'animate-bounce',
+    // Preserve dark mode variants
+    'dark:bg-gray-900',
+    'dark:text-white',
+    'dark:bg-background',
+    'dark:text-foreground',
+    // Preserve framer-motion related classes
+    'motion-safe',
+    'motion-reduce',
+    // Preserve theme-related classes
+    'light',
+    'dark',
+  ],
   plugins: [require('@tailwindcss/typography'), require('tailwindcss-animate')],
 };
